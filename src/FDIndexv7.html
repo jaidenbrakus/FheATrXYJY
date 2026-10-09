@@ -1,0 +1,4527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FDIndex</title>
+    <link rel="icon" href="data:;base64,=" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .initiation_hidden {
+            display: none;
+        }
+
+        html {
+            overflow-y: scroll;
+            background-color: #CEEACAFF;
+        }
+
+        body {
+            margin: 80px 0 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .banner {
+            display: flex;
+            align-items: center;
+            background-color: #1976D2;
+            color: white;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            padding: 2px 16px 2px 6px;
+
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .banner-left {
+            display: flex;
+            align-items: center;
+            padding: 6px;
+            width: 100%;
+
+            overflow-x: auto;
+            scrollbar-width: none;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+        }
+
+        .home {
+            /*min-width: 32px;*/
+            font-size: 22px;
+            height: auto;
+            /*margin: 7px 0px 7px 0px;*/
+        }
+
+        .home a {
+            text-decoration: none;
+            color: inherit;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        #home-click {
+            pointer-events: auto;
+            width: 100%;
+            /*padding: 0;*/
+            user-select: none;
+            cursor: pointer;
+            padding: 9px 0px 9px 0px;
+            transition: transform 0.1s ease, background-color 0.1s ease;
+        }
+
+        #home-click:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        #home-click:active {
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        #home-click span {
+            pointer-events: none;
+        }
+
+        .home span {
+            width: 100%;
+            /*border: 1px solid #ffe222;*/
+        }
+
+        .banner svg {
+            fill: white;
+            padding: 0;
+            margin: 0;
+            height: 10px;
+        }
+
+        .blank {
+            width: 12px;
+        }
+
+        .paths {
+            display: flex;
+            align-items: center;
+            gap: 0px;
+            padding: 0;
+            margin: 0;
+            height: auto;
+            font-size: 14px;
+        }
+
+        .path {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            height: auto;
+            align-items: center;
+            gap: 0px;
+        }
+
+        .path a {
+            text-decoration: none;
+            color: inherit;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        .path-icon {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='10 7 5 10'><path fill='%23FFFFFF' d='M10,17L15,12L10,7V17Z'/></svg>");
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 10px;
+            height: 10px;
+            display: inline-block;
+        }
+
+        .path span {
+            pointer-events: auto;
+            padding: 12px 10px 12px 10px;
+            /*border: 1px solid #ffe222;*/
+            user-select: none;
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.1s ease;
+        }
+
+        .path span:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+            transform: scale(1.05);
+        }
+
+        .path span:active {
+            background-color: rgba(0, 0, 0, 0.5);
+            transform: scale(1);
+        }
+
+        .banner-right {
+            height: auto;
+            padding-right: 18px;
+        }
+
+        .banner-button-right {
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .banner-button-right a {
+            background-color: transparent;
+            border: none;
+            width: 44px;
+            height: 38px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s ease, background-color 0.1s ease;
+        }
+
+        .banner-button-right a:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+            transform: scale(1.05);
+        }
+
+        .banner-button-right a:active {
+            background-color: rgba(0, 0, 0, 0.5);
+            transform: scale(1);
+        }
+
+        .banner-button-right a svg {
+            width: 70%;
+            height: 70%;
+        }
+
+        .body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 720px;
+            padding: 0 14px 24px 14px;
+            box-sizing: border-box;
+        }
+
+        .action {
+            margin: 0 6px 12px 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .action button, .buttongroup button {
+            color: white;
+            background-color: #1976D2;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 10px 14px 10px 14px;
+            transition: transform 0.1s ease, background-color 0.1s ease;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
+        }
+
+        .action button:hover, .buttongroup button:hover {
+            background-color: #2088ee;
+        }
+
+        .action button:active, .buttongroup button:active {
+            background-color: #165ba6;
+        }
+
+        .action button.success-action {
+            background-color: #4CAF50;
+            transition: transform 0.1s ease, background-color 0.1s ease;
+        }
+
+        .action button.success-action:hover {
+            background-color: #5AB55E;
+        }
+
+        .action button.success-action:active {
+            background-color: #61B965;
+        }
+
+        .action button.annoy-action {
+            background-color: #D27619;
+            transition: transform 0.1s ease, background-color 0.1s ease;
+        }
+
+        .action button.annoy-action:hover {
+            background-color: #ee8820;
+        }
+
+        .action button.annoy-action:active {
+            background-color: #a65b16;
+        }
+
+        .action button.dangerous-action {
+            background-color: #D21976;
+            transition: transform 0.1s ease, background-color 0.1s ease;
+        }
+
+        .action button.dangerous-action:hover {
+            background-color: #ee2088;
+        }
+
+        .action button.dangerous-action:active {
+            background-color: #a6165b;
+        }
+
+        .list-box {
+            width: 100%;
+            max-width: 720px;
+            min-height: 400px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            position: relative;
+
+        }
+
+        #list-msg-box {
+            float: left;
+            width: 100%;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.04);
+            /*z-index: 0;*/
+            position: absolute;
+        }
+
+        #list-msg {
+            font-size: 16px;
+            font-weight: normal;
+            width: 100%;
+            height: 100%;
+            /*display: inline-block;*/
+            /*line-height: 50px;*/
+            /*text-align: center;*/
+            /*display: flex;*/
+            /*justify-content: center;*/
+            /*align-items: center;*/
+            display: grid;
+            place-items: center;
+        }
+
+        .msg-error-red-color {
+            color: #F44336
+        }
+
+        .list {
+            /*clear: both;*/
+            padding-bottom: 120px;
+        }
+
+        #progress-bar {
+            width: 100%;
+            background-color: #c6d8ef;
+            border: 0px solid #ccc;
+            height: 4px;
+            /*display: none; */
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #progress {
+            height: 100%;
+            background-color: #1976D2;
+            width: 0%;
+            /*!*animation: progressAnimation 2s infinite;*!*/
+            /*animation: slidingBar 1200ms infinite;*/
+            /*animation-timing-function: cubic-bezier(0.2, 1, 0.8, 1);*/
+        }
+
+        #progress-bar-upload, #progress-bar-fetch {
+            width: 100%;
+            background-color: #f3f3f3;
+            border: 0px solid #ccc;
+            height: 8px;
+            /*display: none; */
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #progress-upload, #progress-fetch {
+            height: 100%;
+            background-color: #1976D2;
+            width: 0%;
+            /*!*animation: progressAnimation 2s infinite;*!*/
+            /*animation: slidingBar-upload 1200ms infinite;*/
+            /*animation-timing-function: cubic-bezier(0.2, 1, 0.8, 1);*/
+        }
+
+        .sliding-bar-animation {
+            animation: slidingBar 1200ms infinite;
+            animation-timing-function: cubic-bezier(0.2, 1, 0.8, 1);
+        }
+
+        @keyframes progressAnimation {
+            0% {
+                width: 0;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+
+        @keyframes slidingBar {
+            0% {
+                transform: translateX(-100%); /* 从容器左边外侧开始 */
+            }
+            100% {
+                transform: translateX(333%); /* 移动到容器右边外侧 */
+            }
+        }
+
+        .item {
+            height: 60px;
+            color: black;
+            background-color: #CEEACA;
+        }
+
+        .item a {
+            text-decoration: none;
+            color: inherit;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        .item-content {
+            pointer-events: auto;
+            height: 100%;
+            transition: transform 0.1s ease, background-color 0.1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0px 14px 0px 12px;
+            gap: 6px;
+        }
+
+        .file .item-content {
+            /*padding: 10px 14px 10px 14px;*/
+        }
+
+        .file .item-content:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .folder .item-content {
+            cursor: pointer;
+            /*padding: 10px 14px 10px 14px;*/
+        }
+
+        .folder .item-content:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .folder .item-content:active {
+            background-color: rgba(0, 0, 0, 0.12);
+        }
+
+        .item-content span {
+            user-select: none;
+        }
+
+        .item-icon {
+            pointer-events: none;
+        }
+
+        .file .item-icon {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23737373' d='M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M15,18V16H6V18H15M18,14V12H6V14H18Z'/></svg>");
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 34px;
+            height: 34px;
+            display: inline-block;
+        }
+
+        .file.symlink .item-icon {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23737373' d='M23 19L20 16V18H16V20H20V22L23 19M13 19C13 18.7 13 18.3 13.1 18H6V16H13.8C14.3 15.2 14.9 14.5 15.7 14H6V12H18V13.1C18.3 13 18.7 13 19 13S19.7 13 20 13.1V8L14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H13.8C13.3 21.1 13 20.1 13 19M13 3.5L18.5 9H13V3.5Z'/></svg>");
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 34px;
+            height: 34px;
+            display: inline-block;
+        }
+
+        .folder .item-icon {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23737373' d='M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z'/></svg>");
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 32px;
+            height: 32px;
+            display: inline-block;
+        }
+
+        .folder.symlink .item-icon {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23737373' d='M13 19C13 19.34 13.04 19.67 13.09 20H4C2.9 20 2 19.11 2 18V6C2 4.89 2.89 4 4 4H10L12 6H20C21.1 6 22 6.89 22 8V13.81C21.12 13.3 20.1 13 19 13C15.69 13 13 15.69 13 19M23 19L20 16V18H16V20H20V22L23 19Z'/></svg>");
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 32px;
+            height: 32px;
+            display: inline-block;
+        }
+
+        .item-action button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s ease, background-color 0.1s ease;
+        }
+
+        .item-action button:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .item-action button:active {
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .file .item-action-download-icon, .item-menu-action-download-icon {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%232196F3' d='M14,2H6C4.89,2 4,2.89 4,4V20C4,21.11 4.89,22 6,22H18C19.11,22 20,21.11 20,20V8L14,2M12,19L8,15H10.5V12H13.5V15H16L12,19M13,9V3.5L18.5,9H13Z'/></svg>");
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 22px;
+            height: 22px;
+            display: inline-block;
+        }
+
+        .folder .item-action-download-icon, .item-menu-action-zipping-icon {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%232196F3' d='M10,2H14A2,2 0 0,1 16,4V6H20A2,2 0 0,1 22,8V19A2,2 0 0,1 20,21H4C2.89,21 2,20.1 2,19V8C2,6.89 2.89,6 4,6H8V4C8,2.89 8.89,2 10,2M14,6V4H10V6H14M12,19L17,14H14V10H10V14H7L12,19Z'/></svg>");
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 22px;
+            height: 22px;
+            display: inline-block;
+        }
+
+        .item-action-rename-icon, .item-menu-action-rename-icon {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23E68920' d='M15 16L11 20H21V16H15M12.06 7.19L3 16.25V20H6.75L15.81 10.94L12.06 7.19M18.71 8.04C19.1 7.65 19.1 7 18.71 6.63L16.37 4.29C16.17 4.09 15.92 4 15.66 4C15.41 4 15.15 4.1 14.96 4.29L13.13 6.12L16.88 9.87L18.71 8.04Z'/></svg>");
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 22px;
+            height: 22px;
+            display: inline-block;
+        }
+
+        .item-action-share-icon, .item-menu-action-share-icon {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23E68920' d='M18 16.08C17.24 16.08 16.56 16.38 16.04 16.85L8.91 12.7C8.96 12.47 9 12.24 9 12S8.96 11.53 8.91 11.3L15.96 7.19C16.5 7.69 17.21 8 18 8C19.66 8 21 6.66 21 5S19.66 2 18 2 15 3.34 15 5C15 5.24 15.04 5.47 15.09 5.7L8.04 9.81C7.5 9.31 6.79 9 6 9C4.34 9 3 10.34 3 12S4.34 15 6 15C6.79 15 7.5 14.69 8.04 14.19L15.16 18.34C15.11 18.55 15.08 18.77 15.08 19C15.08 20.61 16.39 21.91 18 21.91S20.92 20.61 20.92 19C20.92 17.39 19.61 16.08 18 16.08M18 4C18.55 4 19 4.45 19 5S18.55 6 18 6 17 5.55 17 5 17.45 4 18 4M6 13C5.45 13 5 12.55 5 12S5.45 11 6 11 7 11.45 7 12 6.55 13 6 13M18 20C17.45 20 17 19.55 17 19S17.45 18 18 18 19 18.45 19 19 18.55 20 18 20Z'/></svg>");
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 22px;
+            height: 22px;
+            display: inline-block;
+        }
+
+        .item-action-trash-icon, .item-menu-action-trash-icon {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23F44336' d='M15 13H16.5V15.82L18.94 17.23L18.19 18.53L15 16.69V13M23 16C23 19.87 19.87 23 16 23C14.09 23 12.36 22.24 11.1 21H8C6.9 21 6 20.1 6 19V7H18V9.29C20.89 10.15 23 12.83 23 16M16 11C13.24 11 11 13.24 11 16C11 18.76 13.24 21 16 21C18.76 21 21 18.76 21 16C21 13.24 18.76 11 16 11M19 4V6H5V4H8.5L9.5 3H14.5L15.5 4H19Z'/></svg>");
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 22px;
+            height: 22px;
+            display: inline-block;
+        }
+
+        .item-action-delete-icon, .item-menu-action-delete-icon {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23E50D0D' d='M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8.46,11.88L9.87,10.47L12,12.59L14.12,10.47L15.53,11.88L13.41,14L15.53,16.12L14.12,17.53L12,15.41L9.88,17.53L8.47,16.12L10.59,14L8.46,11.88M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z'/></svg>");
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 22px;
+            height: 22px;
+            display: inline-block;
+        }
+
+        .item-action-more-icon {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%232196F3' d='M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z'/></svg>");
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 22px;
+            height: 22px;
+            display: inline-block;
+        }
+
+        .item-info {
+            pointer-events: none;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 2px;
+
+        }
+
+        .item-name {
+            font-size: 15px;
+        }
+
+        .item-meta {
+            font-size: 13px;
+            color: #666666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .item-action {
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .item-action button a {
+            pointer-events: auto;
+        }
+
+        .item-action button i {
+            margin: 4px;
+            pointer-events: none;
+        }
+
+
+        input[type="checkbox"] {
+            display: none;
+        }
+
+        .custom-checkbox {
+            /*display: inline-flex;*/
+            /*align-items: center;*/
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.1s ease;
+        }
+
+        .custom-checkbox:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-checkbox:active {
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .custom-checkbox > i {
+            pointer-events: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23444444' d='M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z'/></svg>");
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 22px;
+            height: 22px;
+            margin: 14px 8px 14px 10px;
+            display: inline-block;
+        }
+
+        input[type="checkbox"]:checked + label > i {
+            pointer-events: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23444444' d='M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M19,5V19H5V5H19M10,17L6,13L7.41,11.58L10,14.17L16.59,7.58L18,9'/></svg>");
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 22px;
+            height: 22px;
+            margin: 14px 8px 14px 10px;
+            display: inline-block;
+        }
+
+        input[type="checkbox"]:indeterminate + label > i {
+            pointer-events: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23444444' d='M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M19,19H5V5H19V19M17,17H7V7H17V17Z'/></svg>");
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 22px;
+            height: 22px;
+            margin: 14px 8px 14px 10px;
+            display: inline-block;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* flex-start*/
+            justify-content: flex-start;
+            z-index: 1001;
+            /*padding-top: 160px;*/
+        }
+
+        .overlay2 {
+            /*position: fixed;*/
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .dialog-margin-top {
+            width: 100%;
+            height: 26%;
+            pointer-events: none;
+        }
+
+        .dialog-margin-bottom {
+            width: 100%;
+            height: 26%;
+            pointer-events: none;
+        }
+
+        .dialog {
+            background-color: #CEEACA;
+            padding: 20px;
+            margin-left: 20px;
+            margin-right: 20px;
+            border-radius: 4px;
+            border: 3px dashed #00000000;
+            width: auto;
+            min-width: 300px;
+            max-width: 460px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            /*transform: translateY(-30%);*/
+        }
+
+        .dialog2 {
+            background-color: #CEEACA;
+            padding: 16px;
+            margin-left: 20px;
+            margin-right: 30px;
+            margin-bottom: 30px;
+            border-radius: 4px;
+            border: 3px dashed #00000000;
+            width: auto;
+            min-width: 230px;
+            max-width: 400px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            /*transform: translateY(-30%);*/
+            position: fixed;
+            bottom: 0;
+            right: 0;
+        }
+
+        div#tipbox-disallowed-upload {
+            width: 100%;
+            margin-top: 2px;
+        }
+
+        div#tipbox-current-url {
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        div#tipbox-disallowed-upload span, div#tipbox-current-url span, div.dl-share-bottom-textbox span {
+            font-size: 12px;
+            color: #a2a2a2;
+            text-align: left;
+            display: block;
+            /*white-space: nowrap;*/
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+        }
+
+        div#upload-file-name {
+            margin-top: 18px;
+            gap: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-right: 26px;
+        }
+
+        label#label-upload-file-name, label.dialog-item-label {
+            font-size: 14px;
+        }
+
+        input#input-upload-file-name {
+            flex: 1;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .file-input {
+            width: 100%;
+            margin-top: 10px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        .upload-btn {
+            margin-top: 20px;
+            padding: 10px;
+            width: 100%;
+            background-color: #1976D2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.1s ease;
+        }
+
+        .upload-btn:hover {
+            background-color: #2088ee;
+        }
+
+        .upload-btn:active {
+            background-color: #165ba6;
+        }
+
+        .upload-btn:disabled {
+            background-color: #959595;
+        }
+
+        #upload2progress {
+            align-items: center;
+        }
+
+        .upload2progress-left {
+            flex: 1;
+        }
+
+        #tipbox-uploading-file-name, #tipbox-fetching-status-name {
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        #tipbox-uploading-bottomdiv {
+            display: flex;
+            /*justify-content: flex-end;*/
+            /*align-items: center;*/
+            justify-content: flex-start;
+            padding-top: 0px;
+            padding-right: 6px;
+            font-size: 14px;
+        }
+
+        #tip-uploading-status {
+            margin-top: 2px;
+            font-size: 12px;
+            color: #666666;
+        }
+
+        #tipbox-uploading-bottomdiv-bfb {
+            display: inline-block;
+            flex: 1;
+        }
+
+        #tipbox-uploading-bottomdiv button {
+            margin-top: 4px;
+            display: inline-block;
+            padding: 4px 10px;
+            color: #1976D1;
+            background: transparent;
+            border: 0px solid #3498db;
+            border-radius: 0px;
+            cursor: pointer;
+            transition: all 0.1s ease-in-out;
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        #tipbox-uploading-bottomdiv button:hover {
+            background: rgba(0, 0, 0, 0.07);
+        }
+
+        #tipbox-uploading-bottomdiv button:active {
+            background: rgba(0, 0, 0, 0.16);
+        }
+
+    </style>
+    <style>
+        .circle {
+            display: inline-block;
+            width: 70px;
+            height: 70px;
+            margin: 18px;
+            margin-right: 28px;
+            margin-bottom: 30px;
+            border-radius: 50%;
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            border: 0px solid #165ba6;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+            background: radial-gradient(circle at top left, #2088ee 30%, #165ba6);
+            transition: transform 0.1s ease, background-color 0.1s ease;
+
+        }
+
+        .circle:hover {
+            background: radial-gradient(circle at top left, #2088ee 45%, #165ba6);
+        }
+
+        .circle:active {
+            background: radial-gradient(circle, #2088ee 10%, #1976D2);
+        }
+
+        .circle::before {
+            content: "";
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            border-radius: inherit;
+            z-index: -1;
+            background: linear-gradient(0deg, #165ba6, #2088ee);
+            mask: linear-gradient(white 0 0) content-box, linear-gradient(white 0 0);
+            mask-composite: exclude;
+            padding: 1px;
+        }
+
+        .circle-inside {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .circle-inside span {
+            font-size: 14px;
+            color: white;
+            display: inline-block;
+            user-select: none;
+        }
+
+        button.ti-action-retry {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s ease, background-color 0.1s ease;
+            padding: 6px 6px;
+        }
+
+        button.ti-action-retry:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        button.ti-action-retry:active {
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .ti-action-retry-icon {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%232196F3' d='M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z'/></svg>");
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 22px;
+            height: 22px;
+            display: inline-block;
+        }
+    </style>
+    <style>
+        .flat-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #1976D1;
+            background: transparent;
+            border: 0px solid #3498db;
+            border-radius: 0px;
+            cursor: pointer;
+            transition: all 0.1s ease-in-out;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .flat-button:hover {
+            background: rgba(0, 0, 0, 0.07);
+        }
+
+        .flat-button:active {
+            background: rgba(0, 0, 0, 0.16);
+        }
+
+        .flat-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+    <style>
+        .layout-column {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .layout-row {
+            display: flex;
+            gap: 6px;
+        }
+
+        .layout-column--no-gap, .layout-row--no-gap {
+            gap: 0;
+        }
+
+    </style>
+    <style>
+        .item-action button.item-action-more {
+            display: none;
+        }
+
+        @media only screen and (max-width: 767px) {
+            body {
+                margin: 74px 0 0;
+            }
+
+            .home {
+                font-size: 18px;
+            }
+
+            .content {
+                /*padding: 0 0 24px 0;*/
+            }
+
+            .item-action button:not(.item-action-more) {
+                visibility: hidden;
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                opacity: 0;
+                pointer-events: none;
+                overflow: hidden;
+                border: 0;
+                padding: 0;
+            }
+
+            .item-action button.item-action-more {
+                display: inline-block;
+            }
+        }
+
+    </style>
+    <style>
+        .menu {
+            position: absolute;
+            background-color: #CEEACA;
+            border-radius: 4px;
+            padding: 4px 0;
+            display: none;
+            z-index: 999;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            user-select: none;
+        }
+
+        .menu div {
+            padding: 8px 28px 8px 18px;
+            cursor: pointer;
+            white-space: nowrap;
+            gap: 4px;
+        }
+
+        .menu div:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .menu div.disabled {
+            color: #a2a2a2;
+        }
+
+        .menu div.disabled:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+    </style>
+</head>
+<body>
+<div class="banner">
+    <div class="banner-left">
+        <div class="home">
+            <a href="#" target="_self" onclick="event.preventDefault();" draggable="false">
+                <div id="home-click"><span>FDIndex</span></div>
+            </a>
+        </div>
+        <span class="blank"></span>
+        <div class="paths">
+            <!--            <div class="path">-->
+            <!--                <i class="path-icon"></i>-->
+            <!--                <span draggable="false">folder1</span>-->
+            <!--            </div>-->
+        </div>
+    </div>
+    <div class="banner-right">
+        <div class="banner-button-right">
+            <a href="#" target="_self" id="open_drive">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M7.71,3.5L1.15,15L4.58,21L11.13,9.5M9.73,15L6.3,21H19.42L22.85,15M22.28,14L15.42,2H8.58L8.57,2L15.43,14H22.28Z"/>
+                </svg>
+            </a>
+            <a href="#" target="_self" id="switch_theme">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M7.5,2C5.71,3.15 4.5,5.18 4.5,7.5C4.5,9.82 5.71,11.85 7.53,13C4.46,13 2,10.54 2,7.5A5.5,5.5 0 0,1 7.5,2M19.07,3.5L20.5,4.93L4.93,20.5L3.5,19.07L19.07,3.5M12.89,5.93L11.41,5L9.97,6L10.39,4.3L9,3.24L10.75,3.12L11.33,1.47L12,3.1L13.73,3.13L12.38,4.26L12.89,5.93M9.59,9.54L8.43,8.81L7.31,9.59L7.65,8.27L6.56,7.44L7.92,7.35L8.37,6.06L8.88,7.33L10.24,7.36L9.19,8.23L9.59,9.54M19,13.5A5.5,5.5 0 0,1 13.5,19C12.28,19 11.15,18.6 10.24,17.93L17.93,10.24C18.6,11.15 19,12.28 19,13.5M14.6,20.08L17.37,18.93L17.13,22.28L14.6,20.08M18.93,17.38L20.08,14.61L22.28,17.15L18.93,17.38M20.08,12.42L18.94,9.64L22.28,9.88L20.08,12.42M9.63,18.93L12.4,20.08L9.87,22.27L9.63,18.93Z"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="body">
+    <div class="content">
+        <div class="action">
+            <div id="wrapper-checkbox1">
+                <input type="checkbox" id="checkbox1">
+                <label class="custom-checkbox">
+                    <i></i>
+                </label>
+            </div>
+            <button id="upload" class="initiation_hidden"><span>上传文件</span></button>
+            <button id="new_folder" class="initiation_hidden"><span>新建文件夹</span></button>
+            <button id="new_shortcut" class="initiation_hidden"><span>创建捷径</span></button>
+            <button id="copy_from" class="initiation_hidden"><span>转存自...</span></button>
+            <button id="batch_copy_link" class="initiation_hidden"><span>复制链接</span></button>
+            <button class="annoy-action initiation_hidden" id="batch_trash"><span>移至垃圾桶</span></button>
+            <button class="dangerous-action initiation_hidden" id="batch_delete"><span>永久删除</span></button>
+            <button class="success-action initiation_hidden" id="batch_reply"><span>添加回复标记</span></button>
+        </div>
+        <div class="list-box">
+            <div id="progress-bar">
+                <div id="progress" class="sliding-bar-animation"></div>
+            </div>
+            <!--            <div style="overflow: hidden;">-->
+            <div id="list-msg-box">
+                <strong id="list-msg" class=""></strong>
+            </div>
+            <!--            </div>-->
+            <div class="list">
+                <!--                <div class="item file" draggable="false">-->
+                <!--                    <a href="#" target="_self" onclick="event.preventDefault();" draggable="false">-->
+                <!--                        <div class="item-content" draggable="true">-->
+                <!--                            <div>-->
+                <!--                                <input type="checkbox"><label class="custom-checkbox"><i></i></label>-->
+                <!--                            </div>-->
+                <!--                            <i class="item-icon"></i>-->
+                <!--                            <div class="item-info">-->
+                <!--                                <div class="item-name"><span>文件名称</span></div>-->
+                <!--                                <div class="item-meta">-->
+                <!--                                    <div class="item-modified-time"><span>2000-10-10 10:10</span></div>-->
+                <!--                                    <div class="item-size"><span>100kb</span></div>-->
+                <!--                                    <div class="item-shared"><span>已共享</span></div>-->
+                <!--                                </div>-->
+                <!--                            </div>-->
+                <!--                            <div class="item-action">-->
+                <!--                                <button class="item-action-download">-->
+                <!--                                    <a href="#" target="_self" onclick="event.preventDefault();">-->
+                <!--                                        <i class="item-action-download-icon"></i>-->
+                <!--                                    </a>-->
+                <!--                                </button>-->
+                <!--                                <button class="item-action-rename">-->
+                <!--                                    <i class="item-action-rename-icon"></i>-->
+                <!--                                </button>-->
+                <!--                                <button class="item-action-share">-->
+                <!--                                    <i class="item-action-share-icon"></i>-->
+                <!--                                </button>-->
+                <!--                                <button class="item-action-trash">-->
+                <!--                                    <i class="item-action-trash-icon"></i>-->
+                <!--                                </button>-->
+                <!--                                <button class="item-action-delete">-->
+                <!--                                    <i class="item-action-delete-icon"></i>-->
+                <!--                                </button>-->
+                <!--                            </div>-->
+                <!--                        </div>-->
+                <!--                    </a>-->
+                <!--                </div>-->
+
+                <!--                <div class="item folder" draggable="false">-->
+                <!--                    <a href="#" target="_self" onclick="event.preventDefault();" draggable="false">-->
+                <!--                        <div class="item-content" draggable="true">-->
+                <!--                            <div>-->
+                <!--                                <input type="checkbox"><label class="custom-checkbox"><i></i></label>-->
+                <!--                            </div>-->
+                <!--                            <i class="item-icon"></i>-->
+                <!--                            <div class="item-info">-->
+                <!--                                <div class="item-name"><span>文件夹名称</span></div>-->
+                <!--                                <div class="item-meta">-->
+                <!--                                </div>-->
+                <!--                            </div>-->
+                <!--                            <div class="item-action">-->
+                <!--                            </div>-->
+                <!--                        </div>-->
+                <!--                    </a>-->
+                <!--                </div>-->
+
+            </div>
+        </div>
+        <div id="tipbox-current-url"><span id="tip-current-url"></span></div>
+    </div>
+</div>
+<div class="overlay2" id="dialogOverlay3" onclick="">
+    <div class="circle">
+        <div class="circle-inside">
+            <span>;</span>
+        </div>
+    </div>
+</div>
+<div class="overlay hidden" id="dialogOverlay" onclick="closeDialog(event)">
+    <div class="dialog-margin-top"></div>
+    <div class="dialog" onclick="event.stopPropagation()">
+        <div id="upload2select">
+            <input type="file" class="file-input" multiple id="fileInput" onchange="handleFileChange(event)">
+            <div id="upload-file-name">
+                <label for="input-upload-file-name" id="label-upload-file-name">名称</label>
+                <input id="input-upload-file-name" type="text" name="keyword"
+                       value="" placeholder="" required
+                       autofocus autocomplete="off" pattern=""/>
+            </div>
+            <button class="upload-btn" id="uploadBtn" onclick="uploadFile()" disabled="">上传</button>
+            <div id="tipbox-disallowed-upload"><span id="tip-disallowed-upload"></span></div>
+        </div>
+        <div id="upload2progress" class="layout-row">
+            <div class="layout-column layout-column--no-gap upload2progress-left">
+                <div id="tipbox-uploading-file-name"><span id="tip-uploading-file-name">filename.icc</span></div>
+                <div id="progress-bar-upload">
+                    <div id="progress-upload" class="sliding-bar-animation"></div>
+                </div>
+                <div id="upload-queue-list"
+                     style="max-height: 280px; overflow-y: auto; padding: 8px 0; border-bottom: 1px solid#eee;"></div>
+                <div id="tipbox-uploading-bottomdiv">
+                    <span id="tip-uploading-status">正在排队...</span>
+                    <div id="tipbox-uploading-bottomdiv-bfb"></div>
+                    <button id="tipbox-uploading-put2bg">最小化</button>
+                </div>
+            </div>
+            <div class="layout-column" id="upload2progress-retry">
+                <button class="ti-action-retry">
+                    <i class="ti-action-retry-icon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="overlay2 hidden" id="dialogOverlay2" onclick="">
+    <div class="dialog2" onclick="event.stopPropagation()">
+        <div id="fetch2progress">
+            <div id="tipbox-fetching-status-name"><span id="tip-fetching-status-name">正在加载内容...</span></div>
+            <div id="progress-bar-fetch">
+                <div id="progress-fetch" class="sliding-bar-animation"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="item-menu" class="menu">
+    <div class="menu-action layout-row" id="item-menu-action-zipping"><i class="item-menu-action-zipping-icon"></i>打包下载
+    </div>
+    <div class="menu-action layout-row" id="item-menu-action-download"><i class="item-menu-action-download-icon"></i>下载
+    </div>
+    <div class="menu-action layout-row" id="item-menu-action-rename"><i class="item-menu-action-rename-icon"></i>重命名
+    </div>
+    <div class="menu-action layout-row" id="item-menu-action-share"><i class="item-menu-action-share-icon"></i>共享设置
+    </div>
+    <div class="menu-action layout-row" id="item-menu-action-trash"><i class="item-menu-action-trash-icon"></i>移至垃圾桶
+    </div>
+    <div class="menu-action layout-row" id="item-menu-action-delete"><i class="item-menu-action-delete-icon"></i>永久删除
+    </div>
+</div>
+
+<script>  <!--defer-->
+
+const FDIndex_version = null;
+const Types = Object.freeze({
+    google_drive: 1, cf_d1_kv: 2, deno_mysql: 3, zoho_workdrive: 4, netlify_blob: 5, pcloud: 6, fermyon_db_kv: 7,
+});
+
+window.root_attr = {
+    "unique": true,
+    "id": null,
+    "type": null,
+    "upload": true,
+    "download": true,
+    "download_as_zip": null,
+    "new_folder": null,
+    "new_shortcut": null,
+    "copy_from": null,
+    "rename": true,
+    "share": true,
+    "move": null,
+    "trash": true,
+    "delete": true,
+    "reply": true,
+    "unique_name": null,
+    "btn_goto_drive": null,
+    "auto_upload_after_drop": null,
+    "disallowed_upload": "",
+
+    "multiple_selection": true,
+    "first_layer_as_drive": true,
+
+    "can_trash": true,
+    "can_share": true,
+    "can_copy": true,
+    "can_shortcut": true,
+    "can_zip": true,
+    "can_resume": true,
+    "max_upload_size": -1,
+
+};
+
+window.root_attr.disallowed_upload = window.root_attr.disallowed_upload.split(/[；，、;,\s]+/).map(decodeURIComponent).filter(i => i.trim() !== '');
+if (window.root_attr.disallowed_upload.length > 0) {
+    document.getElementById('tip-disallowed-upload').textContent = `不允许上传：${window.root_attr.disallowed_upload.join(';')}`;
+}
+
+const _url = new URL(window.location.href.replace(/#$/, ""));
+_url.pathname = "";
+document.querySelector('.home a').setAttribute("href", _url.toString());
+if (_url.searchParams.get('theme') === "dark") {
+    _url.searchParams.delete('theme');
+} else {
+    _url.searchParams.set('theme', 'dark');
+}
+document.querySelector('#switch_theme').setAttribute('title', "切换主题");
+document.querySelector('#switch_theme').setAttribute("href", _url.toString());
+
+// 全局任务列表: key=name, value={ittype, istatus, pturl, file, name, total, curr, progress, session, lsartindex, ui_progressbar, ui_progressbar}
+const upload_task_map = new Map();
+
+const wc1 = document.querySelector('#wrapper-checkbox1')
+const wc1_ckb = wc1.querySelector('input[type="checkbox"]')
+if (!window.root_attr.multiple_selection) {
+    wc1.style.display = "none"
+}
+wc1.querySelector('.custom-checkbox').addEventListener('click', (event) => {
+    if (document.getElementById("progress-bar").style.display !== "none") {
+        return;
+    }
+    wc1_ckb.checked = !wc1_ckb.checked
+    wc1_ckb.indeterminate = false
+    getFileList().forEach(div => {
+        div.querySelector('input[type="checkbox"]').checked = wc1_ckb.checked
+    });
+    let r = getSelectedFile()
+    if (r.selectCount === 0) {
+        wc1_ckb.checked = false
+    }
+    switchButtonGroup(r)
+});
+wc1_ckb.checked = false
+wc1_ckb.indeterminate = false
+
+function getSelectedFile() {
+    let selected = [];
+    const fli = getFileList()
+    fli.forEach(div => {
+        const e = div.querySelector('input[type="checkbox"]');
+        if (e.checked) {
+            selected.push(div)
+        }
+    });
+    return {selected, selectCount: selected.length, totalCount: fli.length,}
+}
+
+for (const elementNodeListOfElement of document.querySelectorAll("button.initiation_hidden")) {
+    elementNodeListOfElement.classList.remove("initiation_hidden")
+}
+
+function switchButtonGroup(r) {
+    if (!r) r = getSelectedFile();
+    if (r.selectCount === 0) {
+        document.querySelector('#batch_copy_link').style.display = 'none';
+        document.querySelector('#batch_trash').style.display = 'none';
+        document.querySelector('#batch_delete').style.display = 'none';
+        document.querySelector('#batch_reply').style.display = 'none';
+
+        if (window.root_attr.upload === true) {
+            document.querySelector('#upload').style.display = 'inline';
+        } else {
+            document.querySelector('#upload').style.display = 'none';
+        }
+        if (window.root_attr.new_folder === true) {
+            document.querySelector('#new_folder').style.display = 'inline';
+        } else {
+            document.querySelector('#new_folder').style.display = 'none';
+        }
+        if (window.root_attr.can_shortcut && window.root_attr.new_shortcut === true) {
+            document.querySelector('#new_shortcut').style.display = 'inline';
+        } else {
+            document.querySelector('#new_shortcut').style.display = 'none';
+        }
+        if (window.root_attr.can_copy && window.root_attr.copy_from === true) {
+            document.querySelector('#copy_from').style.display = 'inline';
+        } else {
+            document.querySelector('#copy_from').style.display = 'none';
+        }
+
+    } else {
+        document.querySelector('#upload').style.display = 'none';
+        document.querySelector('#new_folder').style.display = 'none';
+        document.querySelector('#copy_from').style.display = 'none';
+        document.querySelector('#new_shortcut').style.display = 'none';
+
+        document.querySelector('#batch_copy_link').style.display = 'inline';
+        if (window.root_attr.can_trash && window.root_attr.trash === true) {
+            document.querySelector('#batch_trash').style.display = 'inline';
+        } else {
+            document.querySelector('#batch_trash').style.display = 'none';
+        }
+        if (window.root_attr.delete === true) {
+            document.querySelector('#batch_delete').style.display = 'inline';
+        } else {
+            document.querySelector('#batch_delete').style.display = 'none';
+        }
+        if (window.root_attr.reply === true) {
+            document.querySelector('#batch_reply').style.display = 'inline';
+        } else {
+            document.querySelector('#batch_reply').style.display = 'none';
+        }
+    }
+}
+
+function resolveSelectedItems2kw(items) {
+    let path = getFullPath(items.at(0).querySelector('.item-content')).split("/");
+    path.pop()
+    path = path.join("/");
+    let names = items.map(source => getFullPath(source.querySelector('.item-content')).split("/").pop()).map(name => decodeURIComponent(name))
+    return {location: path, names,}
+}
+
+const ItemTypes = Object.freeze({
+    drive: "drive", file: "file", folder: "folder", symlink: "symlink",
+});
+
+let draggedElement = null;
+
+function toggleAnimation(show,) {
+    const progress_bar = document.getElementById("progress-bar");
+    const progress = document.getElementById("progress");
+    if (!show) {
+        progress_bar.style.display = "none";
+        progress.style.width = "0%";
+        progress.classList.remove("sliding-bar-animation");
+    } else {
+        progress_bar.style.display = "block";
+        progress.style.width = "30%";
+        progress.classList.add("sliding-bar-animation");
+    }
+}
+
+function toggleAnimation_upload(show,) {
+    const progress_bar = document.getElementById("progress-bar-upload");
+    const progress = document.getElementById("progress-upload");
+    if (!show) {
+        // progress_bar.style.display = "none";
+        progress.style.width = "0%";
+        progress.classList.remove("sliding-bar-animation");
+    } else {
+        // progress_bar.style.display = "block";
+        progress.style.width = "30%";
+        progress.classList.add("sliding-bar-animation");
+    }
+}
+
+toggleAnimation(false);
+toggleAnimation_upload(false);
+
+const upload2progress = document.getElementById("upload2progress");
+const upload2progress_retry = document.getElementById("upload2progress-retry");
+let current_upload_pturl = null;
+upload2progress.querySelector("#tipbox-uploading-put2bg").addEventListener("click", (event) => {
+    current_upload_pturl = null;
+    upload2progress.style.display = 'none';
+    closeDialog({target: document.getElementById('dialogOverlay')});
+})
+upload2progress_retry.addEventListener("click", (event) => {
+    for (const ti of cbr.udt.getAllTask(cbr.udt.itypes.upload)) {
+        if (ti.udti_attr.pturl === current_upload_pturl) {
+            ti.querySelector(".ti-action-retry").click()
+        }
+    }
+})
+
+function addDialog(cht) {
+    let htmlTemplate = `
+<div class="overlay">
+    <div class="dialog-margin-top"></div>
+    <div class="dialog" onclick="event.stopPropagation()">
+    </div>
+    <div class="dialog-margin-bottom"></div>
+</div>
+`;
+    let container = document.querySelector('body')
+    container.insertAdjacentHTML('beforeend', htmlTemplate);
+    let overlay = container.querySelector('.overlay:last-child,.overlay2:last-child'); // div
+    let dialog = overlay.querySelector(".dialog");
+    dialog.insertAdjacentHTML('beforeend', cht);
+    let content = dialog.querySelector("div");
+    return {container, overlay, dialog, content}
+}
+
+
+const cbr = document.querySelector('.circle') // circle bottom right
+cbr.tacks = []
+cbr.in = cbr.querySelector('.circle-inside')
+cbr.ct = cbr.querySelector('span')
+cbr.es = addDialog(`
+<div class="dl-cbr-column dl-cbr-column--no-gap">
+    <div class="dl-cbr-column dl-cbr-column--no-gap">
+        <div class="dl-cbr-row dl-cbr-row--no-gap">
+            <button class="flat-button dl-cbr-tabbutton dl-cbr-tabbutton-selected" id="dl-cbr-tabbtn-task-upload">上传</button>
+            <button class="flat-button dl-cbr-tabbutton" id="dl-cbr-tabbtn-task-download">下载</button>
+            <button class="flat-button dl-cbr-tabbutton" id="dl-cbr-tabbtn-setting">设置</button>
+        </div>
+        <div class="dl-cbr-tabbottomline"></div>
+    </div>
+    <div class="dl-cbr-column dl-cbr-tasklist-container">
+        <ul class="dl-cbr-tasklist">
+        </ul>
+    </div>
+    <div class="dl-cbr-column dl-cbr-settings-container">
+        <div class="dl-cbr-row dl-cbr-row--no-gap">
+        </div>
+    </div>
+</div>
+<style>
+
+.dl-cbr-column{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.dl-cbr-row{
+    display: flex;
+    gap: 6px;
+}
+.dl-cbr-column--no-gap,.dl-cbr-row--no-gap{
+   gap: 0;
+}
+.dl-cbr-tabbottomline{
+    width: 100%;
+    height: 1px;
+    background: #1976D1;
+}
+.dl-cbr-tabbutton{
+    padding-top: 8px;
+    padding-bottom: 4px;
+}
+.dl-cbr-tabbutton-selected{
+    font-weight: bold;
+    background: rgba(25,118,210,0.15);
+}
+.dl-cbr-tabbutton-selected:hover{
+    background: rgba(25,118,210,0.2);
+}
+
+.dl-cbr-tasklist-container{
+    margin-top: 4px;
+    border: 2px dashed #00000000;
+}
+
+.dl-cbr-tasklist{
+    min-height: 100px;
+    max-height: 380px;
+    overflow-y: auto;
+    padding: 0;
+    margin:0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.dl-cbr-tasklist li{
+
+}
+
+.dl-cbr-ti-container {
+    /*display: block;*/
+    font-size: 16px;
+    color: black;
+    background: transparent;
+    /*cursor: pointer;*/
+    transition: all 0.1s ease-in-out;
+    text-align: left;
+    text-decoration: none;
+    /*width: 100%;*/
+    align-items: center;
+    justify-content: flex-start;
+    padding: 6px 10px;
+}
+.dl-cbr-ti-container2 {
+    flex:1;
+}
+
+.dl-cbr-ti-container:hover {
+    background: rgba(0, 0, 0, 0.07);
+}
+
+.dl-cbr-ti-progress-bar {
+    width: 100%;
+    background-color: #f3f3f3;
+    border: 0px solid #ccc;
+    height: 6px;
+    /*display: none; */
+    display: block;
+    /*position: absolute;*/
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.dl-cbr-ti-progress {
+    height: 100%;
+    background-color: #1976D2;
+    width: 0%;
+}
+.dl-cbr-ti-file-name {
+    margin-bottom: 2px;
+    font-size: 14px;
+    word-break: break-all;
+}
+.dl-cbr-ti-status {
+    margin-bottom: 2px;
+    font-size: 12px;
+    color: #666666;
+}
+
+</style>
+`);
+cbr.es.overlay.style.display = "none"
+cbr.es.overlay.addEventListener("click", (event) => {
+    cbr.es.overlay.style.display = "none"
+});
+cbr.es.dialog.style.padding = "10px 10px 10px 10px"
+cbr.tabbtn_task_upload = cbr.es.content.querySelector("#dl-cbr-tabbtn-task-upload"); // tab按钮
+cbr.tabbtn_task_download = cbr.es.content.querySelector("#dl-cbr-tabbtn-task-download")
+cbr.tabbtn_setting = cbr.es.content.querySelector("#dl-cbr-tabbtn-setting");
+cbr.content_tasklist = cbr.es.content.querySelector(".dl-cbr-tasklist-container"); // tab内容
+cbr.content_settings = cbr.es.content.querySelector(".dl-cbr-settings-container");
+cbr.upnumber = () => {
+    let count = 0;
+    for (const ti of cbr.udt.getAllTask(cbr.udt.itypes.upload | cbr.udt.itypes.download)) {
+        if (ti.udti_attr.istatus === cbr.udt.istatus.waiting || ti.udti_attr.istatus === cbr.udt.istatus.processing || ti.udti_attr.istatus === cbr.udt.istatus.finalizing || ti.udti_attr.istatus === cbr.udt.istatus.failed) {
+            count++;
+        }
+    }
+    if (count === 0) {
+        cbr.ct.textContent = ";";
+        cbr.ct.style.fontSize = "14px"
+        return;
+    }
+    cbr.ct.textContent = count.toString()
+    cbr.ct.style.fontSize = "16px"
+};
+cbr.tabbtn_getcurrent = () => {
+    for (const tabbtn of cbr.es.content.querySelectorAll(".dl-cbr-tabbutton")) {
+        if (tabbtn.classList.contains("dl-cbr-tabbutton-selected")) {
+            return tabbtn;
+        }
+    }
+    return null;
+}
+cbr.tabbtn_switchselection = (event) => {
+    const tabbtns = cbr.es.content.querySelectorAll(".dl-cbr-tabbutton");
+    for (const tabbtn of tabbtns) {
+        if (tabbtn !== event.target) {
+            tabbtn.classList.remove("dl-cbr-tabbutton-selected")
+        } else {
+            tabbtn.classList.add("dl-cbr-tabbutton-selected")
+            if (tabbtn === cbr.tabbtn_task_upload || tabbtn === cbr.tabbtn_task_download) {
+                cbr.content_tasklist.style.display = "flex"
+                cbr.content_settings.style.display = "none"
+                cbr.udt.switchShow(tabbtn === cbr.tabbtn_task_upload ? cbr.udt.itypes.upload : cbr.udt.itypes.download)
+            } else if (tabbtn === cbr.tabbtn_setting) {
+                cbr.content_tasklist.style.display = "none"
+                cbr.content_settings.style.display = "flex"
+            }
+        }
+    }
+};
+cbr.tabbtn_task_upload.addEventListener("click", (event) => {
+    cbr.tabbtn_switchselection(event);
+});
+cbr.tabbtn_task_download.addEventListener("click", (event) => {
+    cbr.tabbtn_switchselection(event);
+});
+cbr.tabbtn_setting.addEventListener("click", (event) => {
+    cbr.tabbtn_switchselection(event);
+});
+cbr.in.addEventListener("click", (event) => {
+    for (const ti of cbr.udt.getAllTask(cbr.udt.itypes.upload | cbr.udt.itypes.download)) {
+        if (ti.udti_attr.istatus === cbr.udt.istatus.waiting || ti.udti_attr.istatus === cbr.udt.istatus.processing || ti.udti_attr.istatus === cbr.udt.istatus.finalizing || ti.udti_attr.istatus === cbr.udt.istatus.failed) {
+            if (ti.udti_attr.itype === cbr.udt.itypes.upload) {
+                cbr.tabbtn_task_upload.click()
+                break;
+            } else if (ti.udti_attr.itype === cbr.udt.itypes.download) {
+                cbr.tabbtn_task_download.click()
+                break;
+            }
+        }
+    }
+    const cur = cbr.tabbtn_getcurrent()
+    if (cur !== cbr.tabbtn_task_upload && cur !== cbr.tabbtn_task_download) {
+        cbr.tabbtn_task_upload.click()
+    }
+    cbr.es.overlay.style.display = "flex"
+});
+cbr.in.showBorder = function (bl) {
+    for (let sheet of document.styleSheets) {
+        try {
+            for (let rule of sheet.cssRules) {
+                if (rule.selectorText === '.circle::before') {
+                    if (bl) {
+                        rule.style.background = "rgba(255, 255,0 ,0.4)";
+                        rule.style.padding = "6px";
+                    } else {
+                        rule.style.background = "linear-gradient(0deg, #165ba6, #2088ee)";
+                        rule.style.padding = "1px";
+                    }
+                }
+            }
+        } catch (e) {
+            console.warn(e); // 可能遇到跨域 CSS 访问限制
+        }
+    }
+}
+cbr.in.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    try {
+        const parsedObject = JSON.parse(event.dataTransfer.getData("application/json"));
+        if (window.root_attr.download) {
+            cbr.in.showBorder(true);
+        }
+    } catch (e) {
+        cbr.in.showBorder(false);
+    }
+});
+cbr.in.addEventListener('dragleave', (event) => {
+    cbr.in.showBorder(false);
+});
+cbr.in.addEventListener('drop', (event) => {
+    event.preventDefault();
+    cbr.in.showBorder(false);
+    const parsedObject = JSON.parse(event.dataTransfer.getData("application/json"));
+    if (window.root_attr.download && isFile(parsedObject, false)) {
+        let source = findFileItem(parsedObject);
+        cbr.udt.addDownloadTask(new URL(source.querySelector("a").href), source.item_attr, source.querySelector("div.item-name span").textContent);
+    } else if (window.root_attr.download && isFolder(parsedObject, false)) {
+        let source = findFileItem(parsedObject);
+        if (confirm(`下载文件夹 “${source.item_attr.name}“？\n（注：浏览器不能在本地创建文件夹，每个文件都需手动选择保存位置。）`)) {
+            toggleAnimation(true);
+            fetchingStatusBar.displayInfo("正在获取信息...");
+            _resolveTree(getFullPath(source), true);
+        }
+    }
+});
+cbr.udt = cbr.es.content.querySelector(".dl-cbr-tasklist");
+cbr.udt.itypes = {
+    upload: 1,
+    download: 2
+}
+cbr.udt.istatus = {
+    waiting: "正在排队...",
+    processing: "正在{}...",
+    finalizing: "最终阶段...",
+    failed: "失败.",
+    finished: "已完成.",
+}
+cbr.udt.switchShow = function (itype = 0) {
+    for (const ti of cbr.udt.getAllTask(cbr.udt.itypes.upload | cbr.udt.itypes.download)) {
+        if (itype & ti.udti_attr.itype) {
+            ti.closest("li").style.display = "block"
+        } else {
+            ti.closest("li").style.display = "none"
+        }
+    }
+}
+cbr.udt.getAllTask = function (itype = 0) {
+    const li = cbr.udt.querySelectorAll("li");
+    const ls = [];
+    for (const l of li) {
+        const ti = l.querySelector(".dl-cbr-ti-container")
+        if (itype & ti.udti_attr.itype) {
+            ls.push(ti)
+        }
+    }
+    return ls;
+}
+cbr.udt.addTask = function () {
+    const htmlTemplate = `
+<li>
+<div class="dl-cbr-row dl-cbr-ti-container">
+    <div class="dl-cbr-column dl-cbr-column--no-gap dl-cbr-ti-container2">
+        <div class="dl-cbr-ti-file-name"><span class="dl-cbr-ti-tip-file-name"></span></div>
+        <div class="dl-cbr-ti-progress-bar">
+            <div class="dl-cbr-ti-progress sliding-bar-animation"></div>
+        </div>
+        <div class="dl-cbr-ti-status"><span class="dl-cbr-ti-tip-status"></span></div>
+    </div>
+    <div class="dl-cbr-column">
+        <button class="ti-action-retry">
+        <i class="ti-action-retry-icon"></i>
+        </button>
+    </div>
+</div>
+</li>
+`;
+    cbr.udt.insertAdjacentHTML('beforeend', htmlTemplate);
+    const ti = cbr.udt.querySelector("li:last-child div.dl-cbr-ti-container");
+    ti.querySelector(".ti-action-retry").addEventListener("click", (event) => {
+        if (ti.udti_attr.itype === cbr.udt.itypes.upload && ti.udti_attr.istatus === cbr.udt.istatus.failed) {
+            if (!cbr.udt.isUploading()) {
+                cbr.udt.core_upload(ti)
+            } else {
+                ti.udti_attr.istatus = cbr.udt.istatus.waiting
+                cbr.udt.upItem(ti)
+            }
+        } else if (ti.udti_attr.itype === cbr.udt.itypes.download && ti.udti_attr.istatus === cbr.udt.istatus.failed) {
+            if (!cbr.udt.isDownloading()) {
+                cbr.udt.core_download(ti)
+            } else {
+                ti.udti_attr.istatus = cbr.udt.istatus.waiting
+                cbr.udt.upItem(ti)
+            }
+        }
+    });
+    return ti;
+}
+cbr.udt.startOtherTask = function (itype = 0) {
+    for (const ti of cbr.udt.getAllTask(itype)) {
+        if (ti.udti_attr.itype === cbr.udt.itypes.upload) {
+            if (ti.udti_attr.istatus === cbr.udt.istatus.waiting) {
+                cbr.udt.core_upload(ti)
+                return ti;
+            }
+        } else if (ti.udti_attr.itype === cbr.udt.itypes.download) {
+            if (ti.udti_attr.istatus === cbr.udt.istatus.waiting) {
+                cbr.udt.core_download(ti)
+                return ti;
+            }
+        }
+    }
+    return null;
+}
+cbr.udt.isUploading = function () {
+    for (const ti of cbr.udt.getAllTask(cbr.udt.itypes.upload)) {
+        if (ti.udti_attr.istatus === cbr.udt.istatus.processing || ti.udti_attr.istatus === cbr.udt.istatus.finalizing) {
+            return true;
+        }
+    }
+    return false;
+}
+cbr.udt.isDownloading = function () {
+    for (const ti of cbr.udt.getAllTask(cbr.udt.itypes.download)) {
+        if (ti.udti_attr.istatus === cbr.udt.istatus.processing || ti.udti_attr.istatus === cbr.udt.istatus.finalizing) {
+            return true;
+        }
+    }
+    return false;
+}
+cbr.udt.addUploadTask = function (pturl, file, name) {
+    for (const ti of cbr.udt.getAllTask(cbr.udt.itypes.upload)) {
+        if (ti.udti_attr.pturl.pathname === pturl.pathname) {
+            return;
+        }
+    }
+    const ti = cbr.udt.addTask();
+    ti.udti_attr = {
+        itype: cbr.udt.itypes.upload,
+        istatus: cbr.udt.istatus.waiting,
+        pturl: pturl,
+        file: file,
+        name: name,
+        total: 0,
+        curr: 0,
+        progress: 0,
+        session: null,
+        lstartindex: 0,
+        ui_progress_bar: ti.querySelector(".dl-cbr-ti-progress-bar"),
+        ui_progress: ti.querySelector(".dl-cbr-ti-progress"),
+    }
+    cbr.udt.upItem(ti);
+    if (!cbr.udt.isUploading()) { // 开始上传
+        cbr.udt.core_upload(ti)
+    }
+    if (cbr.tabbtn_getcurrent() === cbr.tabbtn_task_upload) {
+        ti.closest("li").style.display = "block"
+    } else {
+        ti.closest("li").style.display = "none"
+    }
+    return ti;
+};
+cbr.udt.addDownloadTask = function (gturl, item_attr, name) {
+    for (const ti of cbr.udt.getAllTask(cbr.udt.itypes.download)) {
+        if (ti.udti_attr.gturl.pathname === gturl.pathname) {
+            return;
+        }
+    }
+    const ti = cbr.udt.addTask();
+    ti.udti_attr = {
+        itype: cbr.udt.itypes.download,
+        istatus: cbr.udt.istatus.waiting,
+        gturl: gturl,
+        item_attr: item_attr,
+        name: name,
+        total: parseInt(item_attr.size, 10),
+        curr: 0,
+        progress: 0,
+        chunks: [],
+        ui_progress_bar: ti.querySelector(".dl-cbr-ti-progress-bar"),
+        ui_progress: ti.querySelector(".dl-cbr-ti-progress"),
+    }
+    cbr.udt.upItem(ti);
+    if (!cbr.udt.isDownloading()) { // 开始下载
+        cbr.udt.core_download(ti)
+    }
+    if (cbr.tabbtn_getcurrent() === cbr.tabbtn_task_download) {
+        ti.closest("li").style.display = "block"
+    } else {
+        ti.closest("li").style.display = "none"
+    }
+    return ti;
+};
+cbr.udt.addDownloadTaskByTree = function (trees, source, paths,) {
+    let files = [], folders = [];
+    for (const tree of trees) {
+        if (isFolder(tree, false)) {
+            folders.push(tree)
+        } else if (isFile(tree, false)) {
+            files.push(tree)
+        }
+    }
+    files.map(e => {
+        const gturl = new URL(source);
+        if (!gturl.pathname.endsWith("/")) gturl.pathname += "/";
+        for (const path of paths) gturl.pathname += path + "/";
+        gturl.pathname += encodeURIComponent(e.name)
+        cbr.udt.addDownloadTask(gturl, e, [...(paths.map(u => decodeURIComponent(u))), e.name].join("/"))
+    })
+    for (const folder of folders) {
+        cbr.udt.addDownloadTaskByTree(folder["children"], source, [...paths, encodeURIComponent(folder["name"]),],);
+    }
+
+}
+cbr.udt.switchShowRetryBtn = function (ti,) {
+    if (ti.udti_attr.istatus === cbr.udt.istatus.failed) {
+        ti.querySelector(".ti-action-retry").style.display = "inline"
+    } else {
+        ti.querySelector(".ti-action-retry").style.display = "none"
+    }
+}
+cbr.udt.upItem = function (ti,) {
+    const name = ti.querySelector(".dl-cbr-ti-tip-file-name");
+    name.textContent = ti.udti_attr.name
+    const status = ti.querySelector(".dl-cbr-ti-tip-status");
+    if (ti.udti_attr.istatus === cbr.udt.istatus.waiting) {
+        cbr.udt.toggleAnimation(ti, false)
+        status.textContent = ti.udti_attr.istatus
+        if (ti.udti_attr.itype === cbr.udt.itypes.upload && current_upload_pturl === ti.udti_attr.pturl) {
+            upload2progress.querySelector("#tip-uploading-status").textContent = status.textContent;
+            upload2progress_retry.style.display = "none";
+            toggleAnimation_upload(false);
+        }
+    } else if (ti.udti_attr.istatus === cbr.udt.istatus.finalizing) {
+        cbr.udt.toggleAnimation(ti, true)
+        status.textContent = ti.udti_attr.istatus
+        if (ti.udti_attr.itype === cbr.udt.itypes.upload && current_upload_pturl === ti.udti_attr.pturl) {
+            upload2progress.querySelector("#tip-uploading-status").textContent = status.textContent;
+            upload2progress_retry.style.display = "none";
+            toggleAnimation_upload(true);
+        }
+    } else if (ti.udti_attr.istatus === cbr.udt.istatus.failed) {
+        cbr.udt.toggleAnimation(ti, false)
+        status.textContent = ti.udti_attr.istatus
+        if (ti.udti_attr.itype === cbr.udt.itypes.upload) {
+            if (current_upload_pturl === ti.udti_attr.pturl) {
+                upload2progress.querySelector("#tip-uploading-status").textContent = status.textContent;
+                upload2progress_retry.style.display = "flex";
+                toggleAnimation_upload(false);
+                // upload2progress.style.display = 'none';
+                // closeDialog({target: document.getElementById('dialogOverlay')});
+                // chdir(null);
+            } else {
+                cbr.udt.startOtherTask(cbr.udt.itypes.upload)
+            }
+        } else if (ti.udti_attr.itype === cbr.udt.itypes.download) {
+            cbr.udt.startOtherTask(cbr.udt.itypes.download)
+        }
+    } else if (ti.udti_attr.istatus === cbr.udt.istatus.finished) {
+        cbr.udt.toggleAnimation(ti, false)
+        status.textContent = ti.udti_attr.istatus
+        ti.udti_attr.ui_progress_bar.style.display = "none"
+        if (ti.udti_attr.itype === cbr.udt.itypes.upload) {
+            if (current_upload_pturl === ti.udti_attr.pturl) {
+                current_upload_pturl = null;
+                upload2progress.querySelector("#tip-uploading-status").textContent = status.textContent;
+                upload2progress.style.display = 'none';
+                closeDialog({target: document.getElementById('dialogOverlay')});
+                chdir(null);
+            } else {
+                const put_path = ti.udti_attr.pturl.pathname.split("/");
+                const cur_path = new URL(window.location.href).pathname.split("/");
+                // console.log(put_path, cur_path)
+                if (cur_path.length > 0 && cur_path.length === put_path.length && cur_path[cur_path.length - 1].length === 0) {
+                    let sm = true;
+                    for (let i = 0; i < cur_path.length - 1; i++) {
+                        if (put_path[i] !== cur_path[i]) {
+                            sm = false
+                            break;
+                        }
+                    }
+                    if (sm) {
+                        if (document.getElementById("progress-bar").style.display !== "none") {
+                            return;
+                        }
+                        chdir(null);
+                    }
+                }
+            }
+            cbr.udt.startOtherTask(cbr.udt.itypes.upload)
+        } else if (ti.udti_attr.itype === cbr.udt.itypes.download) {
+            cbr.udt.startOtherTask(cbr.udt.itypes.download)
+        }
+    } else if (ti.udti_attr.istatus === cbr.udt.istatus.processing) {
+        if (ti.udti_attr.itype === cbr.udt.itypes.upload) {
+            status.textContent = `正在上传... ${ti.udti_attr.progress}%`
+        } else if (ti.udti_attr.itype === cbr.udt.itypes.download) {
+            status.textContent = `正在下载... ${ti.udti_attr.progress}%`
+        }
+        ti.udti_attr.ui_progress.style.width = `${ti.udti_attr.progress}%`;
+        if (ti.udti_attr.itype === cbr.udt.itypes.upload && current_upload_pturl === ti.udti_attr.pturl) {
+            upload2progress.querySelector("#tip-uploading-status").textContent = status.textContent;
+            upload2progress_retry.style.display = "none";
+            upload2progress.querySelector("#progress-upload").style.width = ti.udti_attr.ui_progress.style.width;
+        }
+    }
+    cbr.udt.switchShowRetryBtn(ti)
+    cbr.upnumber();
+}
+cbr.udt.toggleAnimation = function (ti, show,) {
+    if (!show) {
+        ti.udti_attr.ui_progress.style.width = "0%";
+        ti.udti_attr.ui_progress.classList.remove("sliding-bar-animation");
+    } else {
+        ti.udti_attr.ui_progress.style.width = "30%";
+        ti.udti_attr.ui_progress.classList.add("sliding-bar-animation");
+    }
+}
+cbr.udt.core_upload = async function (ti,) {
+    ti.udti_attr.istatus = cbr.udt.istatus.processing
+    ti.udti_attr.progress = 0
+    cbr.udt.upItem(ti)
+
+    if (ti.udti_attr.file.relativePath && ti.udti_attr.file.relativePath.length > 0) { // 创建文件夹
+        let url = new URL(ti.udti_attr.file.relativePath.baseurl)
+        for (const p1name of ti.udti_attr.file.relativePath) {
+            try {
+                const response = await fetch(url.href, {
+                    method: "POST", headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({action: "new_folder", name: p1name,}),
+                });
+                console.log("new_folder:response:", response);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                ti.udti_attr.istatus = cbr.udt.istatus.failed
+                cbr.udt.upItem(ti)
+                return;
+            }
+            url.pathname = url.pathname + encodeURIComponent(p1name) + "/"
+        }
+    }
+
+    if (window.root_attr.can_resume) {
+        // 创建上传会话/获取上次进度
+        if (ti.udti_attr.session) {
+            try {
+                const response = await fetch(ti.udti_attr.pturl, {
+                    method: "POST", headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({action: "upload_get_progress", session: ti.udti_attr.session,}),
+                });
+                console.log("upload_get_progress:response:", response);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = (await response.json());
+                console.log("upload_get_progress:response:json", data);
+                if (data.status === 200) {
+                    ti.udti_attr.istatus = cbr.udt.istatus.finished
+                    cbr.udt.upItem(ti)
+                    return;
+                } else if (data.status === 404) {
+                    ti.udti_attr.session = null;
+                } else if (data.status === 308) {
+                    ti.udti_attr.lstartindex = data["present"] + 1;
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                ti.udti_attr.istatus = cbr.udt.istatus.failed
+                cbr.udt.upItem(ti)
+                return;
+            }
+        }
+        if (!ti.udti_attr.session) {
+            ti.udti_attr.lstartindex = 0;
+            try {
+                const response = await fetch(ti.udti_attr.pturl, {
+                    method: "POST", headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({action: "upload_new_session",}),
+                });
+                console.log("upload_new_session:response:", response);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = (await response.json());
+                console.log("upload_new_session:response:json", data);
+                if (data === null) {
+                    ti.udti_attr.istatus = cbr.udt.istatus.finished
+                    cbr.udt.upItem(ti)
+                    return;
+                }
+                ti.udti_attr.session = data.session;
+            } catch (error) {
+                console.error("Error:", error);
+                ti.udti_attr.istatus = cbr.udt.istatus.failed
+                cbr.udt.upItem(ti)
+                return;
+            }
+        }
+    }
+
+    let pturl = new URL(ti.udti_attr.pturl);
+    if (ti.udti_attr.session) {
+        pturl.searchParams.set("resume", "1");
+        pturl.searchParams.set("session", JSON.stringify(ti.udti_attr.session));
+    }
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("PUT", pturl, true);
+    xhr.setRequestHeader("Content-Type", ti.udti_attr.file.type);
+    if (ti.udti_attr.session) {
+        console.log(`bytes ${ti.udti_attr.lstartindex}-${ti.udti_attr.file.size - 1}/${ti.udti_attr.file.size}`)
+        xhr.setRequestHeader("Content-Range", `bytes ${ti.udti_attr.lstartindex}-${ti.udti_attr.file.size - 1}/${ti.udti_attr.file.size}`);
+    }
+    xhr.upload.onprogress = function (event) {
+        if (event.lengthComputable) {
+            const percentComplete = Math.round(((event.loaded + ti.udti_attr.lstartindex) / (event.total + ti.udti_attr.lstartindex)) * 100);
+            ti.udti_attr.total = event.total
+            ti.udti_attr.curr = event.loaded
+            ti.udti_attr.progress = percentComplete
+            console.log(`上传进度: ${percentComplete}%`);
+            if (percentComplete === 100) {
+                ti.udti_attr.istatus = cbr.udt.istatus.finalizing
+            }
+            cbr.udt.upItem(ti)
+        }
+    };
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log("文件上传成功");
+            ti.udti_attr.istatus = cbr.udt.istatus.finished
+        } else {
+            console.error("文件上传失败", xhr.status, xhr.statusText);
+            ti.udti_attr.istatus = cbr.udt.istatus.failed
+        }
+        cbr.udt.upItem(ti)
+    };
+    xhr.onerror = function () {
+        console.error("请求错误");
+        ti.udti_attr.istatus = cbr.udt.istatus.failed
+        cbr.udt.upItem(ti)
+    };
+    if (ti.udti_attr.session) {
+        xhr.send(ti.udti_attr.file.slice(ti.udti_attr.lstartindex));
+    } else {
+        xhr.send(ti.udti_attr.file);
+    }
+}
+cbr.udt.core_download = async function (ti,) {
+    ti.udti_attr.istatus = cbr.udt.istatus.processing
+    ti.udti_attr.progress = 0
+    cbr.udt.upItem(ti)
+
+    // const xhr = new XMLHttpRequest();
+    // xhr.open("GET", ti.udti_attr.gturl, true);
+    // xhr.responseType = "arraybuffer";
+    // xhr.setRequestHeader("Range", `bytes=${ti.udti_attr.curr}-`);
+    // xhr.onprogress = function (event) {
+    //     console.log(xhr.response, event)
+    //     if (xhr.response) {
+    //         let chunk = new Uint8Array(xhr.response);
+    //         ti.udti_attr.curr += chunk.length;
+    //         console.log(formatBytes(chunk.length), formatBytes(ti.udti_attr.curr), formatBytes(ti.udti_attr.total))
+    //         ti.udti_attr.chunks.push(chunk);
+    //     }
+    //     if (event.lengthComputable) {
+    //         const percentComplete = Math.round((ti.udti_attr.curr / ti.udti_attr.total) * 100);
+    //         ti.udti_attr.progress = percentComplete
+    //         console.log(`下载进度: ${percentComplete}%`);
+    //         console.log(formatBytes(event.loaded), formatBytes(ti.udti_attr.curr))
+    //         if (percentComplete === 100) {
+    //             ti.udti_attr.istatus = cbr.udt.istatus.finalizing
+    //         }
+    //         cbr.udt.upItem(ti)
+    //     }
+    // };
+    // xhr.onload = function () {
+    //     if (xhr.status === 206 || xhr.status === 200) {
+    //         console.log("下载成功",);
+    //         // ti.udti_attr.istatus = cbr.udt.istatus.finished
+    //         // let blob = xhr.response;
+    //         // let a = document.createElement("a");
+    //         // a.href = URL.createObjectURL(blob);
+    //         // a.download = ti.udti_attr.name;
+    //         // a.click();
+    //         // URL.revokeObjectURL(a.href);
+    //     } else {
+    //         console.error("下载失败", xhr.status, xhr.statusText);
+    //         ti.udti_attr.istatus = cbr.udt.istatus.failed
+    //     }
+    //     console.log(xhr.response)
+    //     cbr.udt.upItem(ti)
+    // };
+    // xhr.onerror = function () {
+    //     console.error("请求错误");
+    //     ti.udti_attr.istatus = cbr.udt.istatus.failed
+    //     cbr.udt.upItem(ti)
+    //     console.log(xhr.response)
+    // };
+    // xhr.send();
+
+    let response;
+    let controller = new AbortController();
+    // controller.abort();
+    try {
+        response = await fetch(ti.udti_attr.gturl, {
+            method: "GET",
+            headers: {"Range": `bytes=${ti.udti_attr.curr}-`},
+            signal: controller.signal
+        });
+    } catch (e) {
+        console.error("请求错误", e);
+        ti.udti_attr.istatus = cbr.udt.istatus.failed
+        cbr.udt.upItem(ti)
+        return;
+    }
+
+    if (!response.ok && response.status !== 206) {
+        console.error("响应错误", response);
+        ti.udti_attr.istatus = cbr.udt.istatus.failed
+        cbr.udt.upItem(ti)
+        return;
+    }
+    let reader = response.body.getReader();
+    let contentLength = Number(response.headers.get("Content-Length")) || ti.udti_attr.total;
+    console.log(`预计下载: ${formatBytes(contentLength)}`);
+
+    while (true) {
+        let done, value;
+        try {
+            const _ = await reader.read();
+            value = _.value;
+            done = _.done;
+        } catch (e) {
+            console.error("读取错误", e);
+            ti.udti_attr.istatus = cbr.udt.istatus.failed
+            cbr.udt.upItem(ti)
+            return;
+        }
+        if (done) break;
+        ti.udti_attr.chunks.push(value);
+        ti.udti_attr.curr += value.length;
+        let percentComplete = Math.round((ti.udti_attr.curr / ti.udti_attr.total) * 100);
+        ti.udti_attr.progress = percentComplete
+        console.log(`下载进度: ${percentComplete}%`);
+        if (percentComplete === 100) {
+            ti.udti_attr.istatus = cbr.udt.istatus.finalizing
+        }
+        cbr.udt.upItem(ti)
+    }
+    console.log(`已读完`, formatBytes(ti.udti_attr.curr), formatBytes(contentLength), formatBytes(ti.udti_attr.total), ti.udti_attr.curr === ti.udti_attr.total, ti.udti_attr.curr === contentLength);
+    let totalArray = new Uint8Array(ti.udti_attr.curr);
+    let offset = 0;
+    for (let chunk of ti.udti_attr.chunks) {
+        totalArray.set(chunk, offset);
+        offset += chunk.length;
+    }
+
+    let blob = new Blob([totalArray]);
+    let a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = ti.udti_attr.name.split("/").at(-1);
+    a.click();
+    URL.revokeObjectURL(a.href);
+    console.log("下载成功",);
+    ti.udti_attr.chunks.length = 0;
+    ti.udti_attr.curr = 0;
+    ti.udti_attr.istatus = cbr.udt.istatus.finished
+    cbr.udt.upItem(ti)
+
+}
+cbr.content_tasklist.addEventListener('dragenter', (event) => {
+    if (!root_attr.upload) {
+        event.preventDefault();
+        event.stopPropagation()
+        return;
+    }
+    if (!cbr.tabbtn_task_upload.classList.contains("dl-cbr-tabbutton-selected")) {
+        event.preventDefault();
+        event.stopPropagation()
+        return;
+    }
+    event.preventDefault();
+    cbr.content_tasklist.style.border = "2px dashed #2088ee";
+});
+cbr.content_tasklist.addEventListener('dragover', (event) => {
+    if (!root_attr.upload) {
+        event.preventDefault();
+        event.stopPropagation()
+        return;
+    }
+    if (!cbr.tabbtn_task_upload.classList.contains("dl-cbr-tabbutton-selected")) {
+        event.preventDefault();
+        event.stopPropagation()
+        return;
+    }
+    event.preventDefault();
+    cbr.content_tasklist.style.border = "2px dashed #2088ee";
+});
+cbr.content_tasklist.addEventListener('dragleave', () => {
+    cbr.content_tasklist.style.border = "2px dashed #00000000";
+});
+cbr.content_tasklist.addEventListener('drop', async (event) => {
+    if (!root_attr.upload) {
+        event.preventDefault();
+        event.stopPropagation()
+        return;
+    }
+    if (!cbr.tabbtn_task_upload.classList.contains("dl-cbr-tabbutton-selected")) {
+        event.preventDefault();
+        event.stopPropagation()
+        return;
+    }
+    event.preventDefault();
+    cbr.content_tasklist.style.border = "2px dashed #00000000";
+    const dataTransferItems = event.dataTransfer.items;
+    const validFiles = [];
+    const validFolders = [];
+    for (let i = 0; i < dataTransferItems.length; i++) {
+        const item = dataTransferItems[i];
+        const entry = item.webkitGetAsEntry && item.webkitGetAsEntry();
+        // console.log(item, entry);
+        if (item.kind === 'file') {
+            if (entry && entry.isDirectory) {
+                validFolders.push(entry);
+            } else {
+                const file = item.getAsFile();
+                // console.log(file,);
+                if (file) {
+                    validFiles.push(file);
+                }
+            }
+        }
+    }
+    if (validFolders.length > 0) {
+        for (const entry of validFolders) {
+            const files = await getAllFilesFromDroppedFolder(entry);
+            for (const file of files) {
+                // console.log(file.relativePath, file);
+                file.relativePath.pop()
+                validFiles.push(file);
+            }
+        }
+        // return;
+    }
+    let files = [];
+    if (validFiles.length > 0) {
+        for (const file of validFiles) {
+            let can = true;
+            let name = file.name.replace(/[/\\:*?"<>\r\n\t\f]|^[\s]+|[\s]+$/g, '');
+            if (name.length === 0) {
+                can = false;
+            }
+            if (/^\.*$/.test(name)) {
+                can = false;
+            }
+            if (!can) {
+                // continue;
+                return;
+            }
+            for (let disallowedUploadElement of window.root_attr.disallowed_upload) {
+                if (!disallowedUploadElement.startsWith('.')) {
+                    disallowedUploadElement = "." + disallowedUploadElement;
+                }
+                if (name.endsWith(disallowedUploadElement)) {
+                    alert(document.getElementById('tip-disallowed-upload').textContent);
+                    can = false;
+                    break;
+                }
+            }
+            if (!can) {
+                // continue;
+                return;
+            }
+            if (root_attr.max_upload_size > 0 && file.size >= root_attr.max_upload_size * 1024 * 1024) {
+                alert(`单文件大小限制为${root_attr.max_upload_size}MB。`);
+                can = false;
+                // continue;
+                return;
+            }
+
+            if (root_attr.unique_name) {
+                if (file.relativePath && file.relativePath.length > 0) { // 不检查
+                } else {
+                    for (let itemElement of getFileList()) {
+                        if (name === itemElement.querySelector(".item-name span").textContent) {
+                            alert(`名称重复 “${name}” 。`);
+                            can = false;
+                            break;
+                        }
+                    }
+                }
+
+            }
+            if (!can) {
+                // continue;
+                return;
+            }
+            file.formated_name = name;
+            files.push(file)
+        }
+    }
+    if (files.length > 0 && confirm(`${files.length}个文件，开始上传？`)) {
+        let url = new URL(window.location.href.replace(/#$/, ""));
+        if (!url.pathname.endsWith('/')) url.pathname += "/";
+        for (const file of files) {
+            let file_url = new URL(url)
+            if (file.relativePath && file.relativePath.length > 0) {
+                file.relativePath.baseurl = new URL(url)
+                file_url.pathname = file_url.pathname + file.relativePath.map(encodeURIComponent).join("/") + "/"
+            }
+            file_url.pathname = file_url.pathname + encodeURIComponent(file.formated_name);
+            // console.log(file_url, file, file.formated_name)
+            cbr.udt.addUploadTask(file_url, file,
+                file.relativePath && file.relativePath.length > 0 ? file.relativePath.join("/") + "/" + file.formated_name : file.formated_name);
+        }
+    }
+});
+
+async function getAllFilesFromDroppedFolder(entry) {
+    const files = [];
+    await traverseEntry(entry, [], files);
+    return files;
+}
+
+async function traverseEntry(entry, pathArray = [], files = []) {
+    return new Promise((resolve) => {
+        if (entry.isFile) {
+            entry.file(file => {
+                file.relativePath = [...pathArray, file.name];
+                files.push(file);
+                resolve();
+            });
+        } else if (entry.isDirectory) {
+            const reader = entry.createReader();
+
+            const readAll = () => {
+                reader.readEntries(async entries => {
+                    if (entries.length === 0) {
+                        resolve(); // done
+                    } else {
+                        for (const e of entries) {
+                            await traverseEntry(e, [...pathArray, entry.name], files);
+                        }
+                        readAll(); // in case more entries exist
+                    }
+                });
+            };
+
+            readAll();
+        }
+    });
+}
+
+
+// 右下角进度条
+class FetchingStatusBar {
+    constructor() {
+        this.overlay = document.querySelector('#dialogOverlay2');
+        this.fetch2progress = this.overlay.querySelector("#fetch2progress");
+        this.tip_fetching_status_name = this.overlay.querySelector("#tip-fetching-status-name");
+        this.progress_bar = this.overlay.querySelector("#progress-bar-fetch");
+        this.progress = this.overlay.querySelector("#progress-fetch");
+        // this.fetch2progress.style.display = 'block';
+        this.timeoutTimer = null;
+    }
+
+    toggleAnimation(show,) {
+        if (!show) {
+            this.progress.style.width = "0%";
+            this.progress.classList.remove("sliding-bar-animation");
+        } else {
+            this.progress.style.width = "30%";
+            this.progress.classList.add("sliding-bar-animation");
+        }
+    }
+
+    displayInfo(str = "", process = -1, timeout = -1) {
+        if (this.timeoutTimer !== null) {
+            clearTimeout(this.timeoutTimer)
+            this.timeoutTimer = null;
+        }
+        this.tip_fetching_status_name.textContent = str;
+        if (str.length > 0) {
+            this.overlay.classList.remove('hidden');
+            cbr.style.marginBottom = "115px"
+            if (process === -1) {
+                this.toggleAnimation(true)
+            } else {
+                this.toggleAnimation(false)
+                this.progress_bar.style.display = "block";
+                this.progress.style.width = `${process}%`;
+            }
+            if (timeout > 0) {
+                this.timeoutTimer = setTimeout(() => {
+                    this.displayInfo()
+                }, timeout,);
+            }
+        } else {
+            this.overlay.classList.add('hidden');
+            cbr.style.marginBottom = ""
+            this.toggleAnimation(false)
+        }
+    }
+}
+
+const fetchingStatusBar = new FetchingStatusBar();
+
+
+function showListMsg(s, error = false) {
+    const div = document.getElementById("list-msg-box");
+    const p = div.querySelector("#list-msg");
+    p.textContent = s
+    if (s.length > 0) {
+        div.style.display = "block";
+    } else {
+        div.style.display = "none";
+    }
+    if (error) {
+        div.classList.add("msg-error-red-color")
+    } else {
+        div.classList.remove("msg-error-red-color")
+    }
+}
+
+showListMsg("")
+
+// 文件item操作菜单
+const item_menu = document.getElementById('item-menu');
+document.addEventListener('click', function () {
+    item_menu.currentTrItem = null;
+    item_menu.style.display = 'none';
+});
+document.addEventListener('keydown', function (event) {
+    item_menu.currentTrItem = null;
+    if (event.key === 'Escape') {
+        item_menu.style.display = 'none';
+    }
+});
+item_menu.querySelector("#item-menu-action-zipping").addEventListener("click", async function () {
+    if (item_menu.currentTrItem) {
+        item_menu.currentTrItem.querySelector('.item-action-download').click();
+    }
+    item_menu.currentTrItem = null;
+    item_menu.style.display = 'none';
+})
+item_menu.querySelector("#item-menu-action-download").addEventListener("click", async function () {
+    if (item_menu.currentTrItem) {
+        item_menu.currentTrItem.querySelector('.item-action-download').click();
+    }
+    item_menu.currentTrItem = null;
+    item_menu.style.display = 'none';
+})
+item_menu.querySelector("#item-menu-action-rename").addEventListener("click", async function () {
+    if (item_menu.currentTrItem) {
+        item_menu.currentTrItem.querySelector('.item-action-rename').click();
+    }
+    item_menu.currentTrItem = null;
+    item_menu.style.display = 'none';
+})
+item_menu.querySelector("#item-menu-action-share").addEventListener("click", async function () {
+    if (item_menu.currentTrItem) {
+        item_menu.currentTrItem.querySelector('.item-action-share').click();
+    }
+    item_menu.currentTrItem = null;
+    item_menu.style.display = 'none';
+})
+item_menu.querySelector("#item-menu-action-trash").addEventListener("click", async function () {
+    if (item_menu.currentTrItem) {
+        item_menu.currentTrItem.querySelector('.item-action-trash').click();
+    }
+    item_menu.currentTrItem = null;
+    item_menu.style.display = 'none';
+})
+item_menu.querySelector("#item-menu-action-delete").addEventListener("click", async function () {
+    if (item_menu.currentTrItem) {
+        item_menu.currentTrItem.querySelector('.item-action-delete').click();
+    }
+    item_menu.currentTrItem = null;
+    item_menu.style.display = 'none';
+})
+
+
+function formatTimestamp(timestamp, format) {
+    const date = new Date((timestamp + (8 * 60 * 60)) * 1000);
+    const map = {
+        'YYYY': date.getUTCFullYear(),
+        'MM': String(date.getUTCMonth() + 1).padStart(2, '0'),
+        'DD': String(date.getUTCDate()).padStart(2, '0'),
+        'HH': String(date.getUTCHours()).padStart(2, '0'),
+        'mm': String(date.getUTCMinutes()).padStart(2, '0'),
+        'ss': String(date.getUTCSeconds()).padStart(2, '0')
+    };
+    return format.replace(/YYYY|MM|DD|HH|mm|ss/g, matched => map[matched]);
+}
+
+
+function formatBytes(bytes) {
+    if (bytes === 0) return "0 B";
+    const sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(1024));
+    let formattedSize = (bytes / Math.pow(1024, i)).toFixed(1);
+    if (formattedSize % 1 === 0) formattedSize = parseInt(formattedSize);
+    return `${formattedSize} ${sizes[i]}`;
+}
+
+function getFileList() {
+    return document.querySelectorAll('.list > .item'); // div
+}
+
+function clearFileList() {
+    getFileList().forEach(div => {
+        div.remove();
+    });
+    wc1_ckb.checked = false
+    wc1_ckb.indeterminate = false
+    switchButtonGroup()
+}
+
+function isFile(attr, exactly) {
+    if (exactly) {
+        return attr.type.toString() === ItemTypes.file;
+    }
+    return attr.type.toString() === ItemTypes.file || attr.type.toString() === ItemTypes.symlink && attr.symlink_target.type.toString() === ItemTypes.file;
+}
+
+function isFolder(attr, exactly) {
+    if (exactly) {
+        return attr.type.toString() === ItemTypes.folder;
+    }
+    if (attr.type.toString() === ItemTypes.folder || attr.type.toString() === ItemTypes.symlink && attr.symlink_target.type.toString() === ItemTypes.folder) {
+        return true;
+    }
+    return false;
+}
+
+function isDrive(attr,) {
+    return attr.type.toString() === ItemTypes.drive;
+}
+
+function isSymlink(attr,) {
+    return attr.type.toString() === ItemTypes.symlink;
+}
+
+
+function addFile(attr) {
+    let container = document.querySelector('.list')
+    let _new;
+    let _new__content;
+    let url = new URL(window.location.href);
+    if (!url.pathname.endsWith('/')) url.pathname += "/";
+    url.pathname = url.pathname + encodeURIComponent(attr.name);
+    if (!isFile(attr, false)) url.pathname += "/";
+
+    const HT_checkBox_id = crypto.randomUUID().replace(/-/g, ""); // for="${HT_checkBox_id}"
+    let HT_checkBox = `
+<div>
+    <input type="checkbox" id="${HT_checkBox_id}">
+    <label class="custom-checkbox">
+        <i></i>
+    </label>
+</div>
+`;
+
+    if (isFile(attr, false)) {
+        let htmlTemplate = `
+<div class="item file" draggable="false">
+    <a href="${url.toString()}" target="_self" onclick="event.preventDefault();" draggable="false">
+        <div class="item-content" draggable="true">
+            <i class="item-icon"></i>
+            <div class="item-info">
+                <div class="item-name"><span>${attr.name}</span></div>
+                <div class="item-meta">
+                </div>
+            </div>
+            <div class="item-action">
+            </div>
+        </div>
+    </a>
+</div>
+`;
+        container.insertAdjacentHTML('beforeend', htmlTemplate);
+        _new = container.querySelector('.item:last-child'); // div
+        _new__content = _new.querySelector('.item-content'); // div
+        if (root_attr.multiple_selection) {
+            _new__content.style.padding = "0px 14px 0px 6px";
+            _new__content.insertAdjacentHTML('afterbegin', HT_checkBox);
+            _new__content.querySelector('.custom-checkbox').addEventListener('click', (event) => {
+                if (document.getElementById("progress-bar").style.display !== "none") {
+                    return;
+                }
+                const ckb = document.getElementById(HT_checkBox_id)
+                ckb.checked = !ckb.checked
+                let r = getSelectedFile();
+                if (r.selectCount === 0) {
+                    wc1_ckb.checked = false
+                    wc1_ckb.indeterminate = false
+                } else if (r.selectCount > 0 && r.selectCount !== r.totalCount) {
+                    wc1_ckb.checked = false
+                    wc1_ckb.indeterminate = true
+                } else if (r.selectCount > 0 && r.selectCount === r.totalCount) {
+                    wc1_ckb.checked = true
+                    wc1_ckb.indeterminate = false
+                }
+                switchButtonGroup(r)
+            });
+        }
+        let _new__meta = _new__content.querySelector('.item-meta'); // div
+        if (attr["modified_time"]) {
+            const formattedDate = formatTimestamp(attr["modified_time"], 'YYYY-MM-DD HH:mm');
+            _new__meta.insertAdjacentHTML('beforeend', `<div class="item-modified-time"><span>${formattedDate}</span></div>`);
+        }
+        _new__meta.insertAdjacentHTML('beforeend', `<div class="item-size"><span>${formatBytes(parseInt(attr.size, 10))}</span></div>`);
+        if (attr.shared === true) {
+            _new__meta.insertAdjacentHTML('beforeend', `<div class="item-shared"><span>已共享</span></div>`);
+        }
+        let _new__action = _new__content.querySelector('.item-action'); // div
+        if (window.root_attr.download === true) {
+            _new__action.insertAdjacentHTML('beforeend', `
+<button class="item-action-download" title="下载">
+    <a href="${url.toString()}" target="_self" onclick="event.preventDefault();">
+        <i class="item-action-download-icon"></i>
+    </a>
+</button>
+`);
+            _new__action.querySelector('.item-action-download').addEventListener('click', function (e) {
+                // console.log(e.target);
+                if (e.target.tagName === 'A') { // 多余
+                    e.stopPropagation();
+                    e.preventDefault();
+                    e.target.parentNode.click();
+                    return;
+                }
+                if (!fetchingStatusBar.overlay.classList.contains("hidden")) {
+                    return;
+                }
+                // e.stopImmediatePropagation();
+                e.stopPropagation();
+                e.preventDefault();
+                const a = document.createElement('a');
+                a.href = e.target.querySelector("a").href;
+                a.download = e.target.closest(".item-content").item_attr.name;
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                fetchingStatusBar.displayInfo("已发起下载请求...", -1, 5000);
+            });
+        }
+        if (window.root_attr.rename === true) {
+            _new__action.insertAdjacentHTML('beforeend', `
+<button class="item-action-rename" title="重命名">
+    <i class="item-action-rename-icon"></i>
+</button>
+`);
+            _new__action.querySelector('.item-action-rename').addEventListener('click', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                rename(e);
+            });
+        }
+        if (window.root_attr.share === true && window.root_attr.can_share === true) {
+            _new__action.insertAdjacentHTML('beforeend', `
+<button class="item-action-share" title="共享设置">
+    <i class="item-action-share-icon"></i>
+</button>
+`);
+            _new__action.querySelector('.item-action-share').addEventListener('click', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                share(e);
+            });
+        }
+        if (window.root_attr.trash === true && window.root_attr.can_trash === true) {
+            _new__action.insertAdjacentHTML('beforeend', `
+<button class="item-action-trash" title="移至垃圾桶">
+    <i class="item-action-trash-icon"></i>
+</button>
+`);
+            _new__action.querySelector('.item-action-trash').addEventListener('click', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                trash(e);
+            });
+        }
+        if (window.root_attr.delete === true) {
+            _new__action.insertAdjacentHTML('beforeend', `
+<button class="item-action-delete" title="永久删除">
+    <i class="item-action-delete-icon"></i>
+</button>
+`);
+            _new__action.querySelector('.item-action-delete').addEventListener('click', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                _delete(e);
+            });
+        }
+        {
+            _new__action.insertAdjacentHTML('beforeend', `
+<button class="item-action-more" title="更多操作">
+    <i class="item-action-more-icon"></i>
+</button>
+`);
+            _new__action.querySelector('.item-action-more').addEventListener('click', function (e) {
+                // console.log(e.target);
+                if (e.target.tagName === 'A') { // 多余
+                    e.stopPropagation();
+                    e.preventDefault();
+                    e.target.parentNode.click();
+                    return;
+                }
+                // e.stopImmediatePropagation();
+                e.stopPropagation();
+                e.preventDefault();
+
+                item_menu.querySelector("#item-menu-action-zipping").style.display = "none";
+                item_menu.querySelector("#item-menu-action-download").style.display = window.root_attr.download ? "" : "none";
+                item_menu.querySelector("#item-menu-action-rename").style.display = window.root_attr.rename ? "" : "none";
+                item_menu.querySelector("#item-menu-action-share").style.display = window.root_attr.share === true && window.root_attr.can_share === true ? "" : "none";
+                item_menu.querySelector("#item-menu-action-trash").style.display = window.root_attr.trash === true && window.root_attr.can_trash === true ? "" : "none";
+                item_menu.querySelector("#item-menu-action-delete").style.display = window.root_attr.delete === true ? "" : "none";
+                item_menu.currentTrItem = _new;
+                item_menu.style.display = 'block';
+
+                // item_menu.style.left = `${e.pageX}px`;
+                // item_menu.style.top = `${e.pageY}px`;
+                const menu = item_menu;
+                const menuWidth = menu.offsetWidth;
+                const menuHeight = menu.offsetHeight;
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                let x = e.clientX;
+                let y = e.clientY;
+                if (x + menuWidth > viewportWidth) {
+                    x = viewportWidth - menuWidth - 40;
+                }
+                if (y + menuHeight > viewportHeight) {
+                    y = viewportHeight - menuHeight;
+                }
+                menu.style.left = `${x + window.scrollX}px`;
+                menu.style.top = `${y + window.scrollY}px`;
+            });
+        }
+    } else if (isFolder(attr, false)) {
+        let htmlTemplate = `
+<div class="item folder" draggable="false">
+    <a href="${url.toString()}" target="_self" onclick="event.preventDefault();" draggable="false">
+        <div class="item-content" draggable="true">
+            <i class="item-icon"></i>
+            <div class="item-info">
+                <div class="item-name"><span>${attr.name}</span></div>
+                <div class="item-meta">
+                </div>
+            </div>
+            <div class="item-action">
+            </div>
+        </div>
+    </a>
+</div>
+`;
+        container.insertAdjacentHTML('beforeend', htmlTemplate);
+        _new = container.querySelector('.item:last-child'); // div
+        _new__content = _new.querySelector('.item-content'); // div
+        if (root_attr.multiple_selection) {
+            _new__content.style.padding = "0px 14px 0px 6px";
+            _new__content.insertAdjacentHTML('afterbegin', HT_checkBox);
+            _new__content.querySelector('.custom-checkbox').addEventListener('click', (event) => {
+                if (document.getElementById("progress-bar").style.display !== "none") {
+                    return;
+                }
+                const ckb = document.getElementById(HT_checkBox_id)
+                ckb.checked = !ckb.checked
+                let r = getSelectedFile();
+                if (r.selectCount === 0) {
+                    wc1_ckb.checked = false
+                    wc1_ckb.indeterminate = false
+                } else if (r.selectCount > 0 && r.selectCount !== r.totalCount) {
+                    wc1_ckb.checked = false
+                    wc1_ckb.indeterminate = true
+                } else if (r.selectCount > 0 && r.selectCount === r.totalCount) {
+                    wc1_ckb.checked = true
+                    wc1_ckb.indeterminate = false
+                }
+                switchButtonGroup(r)
+            });
+        }
+        let _new__meta = _new__content.querySelector('.item-meta'); // div
+        if (attr["modified_time"]) {
+            const formattedDate = formatTimestamp(attr["modified_time"], 'YYYY-MM-DD HH:mm');
+            _new__meta.insertAdjacentHTML('beforeend', `<div class="item-modified-time"><span>${formattedDate}</span></div>`);
+        }
+        if (attr.shared === true) {
+            _new__meta.insertAdjacentHTML('beforeend', `<div class="item-shared"><span>已共享</span></div>`);
+        }
+        let _new__action = _new__content.querySelector('.item-action'); // div
+        if (window.root_attr.download_as_zip === true && window.root_attr.can_zip === true) {
+            _new__action.insertAdjacentHTML('beforeend', `
+<button class="item-action-download" title="打包下载">
+    <a href="${url.toString()}" target="_self" onclick="event.preventDefault();">
+        <i class="item-action-download-icon"></i>
+    </a>
+</button>
+`);
+            _new__action.querySelector('.item-action-download').addEventListener('click', function (e) {
+                // console.log(e.target);
+                if (e.target.tagName === 'A') { // 多余
+                    e.stopPropagation();
+                    e.preventDefault();
+                    e.target.parentNode.click();
+                    return;
+                }
+                // e.stopImmediatePropagation();
+                e.stopPropagation();
+                e.preventDefault();
+                zipping_request(e);
+            });
+        }
+        if (window.root_attr.rename === true) {
+            _new__action.insertAdjacentHTML('beforeend', `
+<button class="item-action-rename" title="重命名">
+    <i class="item-action-rename-icon"></i>
+</button>
+`);
+            _new__action.querySelector('.item-action-rename').addEventListener('click', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                rename(e);
+            });
+        }
+        if (window.root_attr.share === true && window.root_attr.can_share === true) {
+            _new__action.insertAdjacentHTML('beforeend', `
+<button class="item-action-share" title="共享设置">
+    <i class="item-action-share-icon"></i>
+</button>
+`);
+            _new__action.querySelector('.item-action-share').addEventListener('click', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                share(e);
+            });
+        }
+        if (window.root_attr.trash === true && window.root_attr.can_trash === true) {
+            _new__action.insertAdjacentHTML('beforeend', `
+<button class="item-action-trash" title="移至垃圾桶">
+    <i class="item-action-trash-icon"></i>
+</button>
+`);
+            _new__action.querySelector('.item-action-trash').addEventListener('click', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                trash(e);
+            });
+        }
+        if (window.root_attr.delete === true) {
+            _new__action.insertAdjacentHTML('beforeend', `
+<button class="item-action-delete" title="永久删除">
+    <i class="item-action-delete-icon"></i>
+</button>
+`);
+            _new__action.querySelector('.item-action-delete').addEventListener('click', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                _delete(e);
+            });
+        }
+        _new__content.addEventListener('click', function (e) {
+            if (e.target.classList.contains('item-content')) {
+                if (document.getElementById("progress-bar").style.display !== "none") {
+                    return;
+                }
+                chdir(e);
+            }
+        });
+        _new__content.addEventListener('drop', function (e) {
+            if (!window.root_attr["move"]) {
+                e.preventDefault();
+                return;
+            }
+            if (e.target.classList.contains('item-content')) {
+                e.preventDefault();
+                e.target.style.backgroundColor = "";
+                const parsedObject = JSON.parse(e.dataTransfer.getData("application/json"));
+                if ((isFolder(e.target.item_attr, false) || isDrive(e.target.item_attr)) && window.root_attr.upload && parsedObject.id.toString() !== e.target.item_attr.id.toString()) {
+                    let source = findFileItem(parsedObject);
+                    move(source, e, parsedObject);
+                }
+            }
+        });
+        _new__content.addEventListener('dragover', function (e) {
+            if (!window.root_attr["move"]) {
+                e.preventDefault();
+                return;
+            }
+            if (e.target.classList.contains('item-content')) {
+                const parsedObject = JSON.parse(e.dataTransfer.getData("application/json"));
+                // console.log("是否允许拖入。", e.target.item_attr);
+                if ((isFolder(e.target.item_attr, false) || isDrive(e.target.item_attr)) && window.root_attr.upload && parsedObject.id.toString() !== e.target.item_attr.id.toString()) {
+                    // console.log("允许。",);
+                    e.preventDefault();
+                    e.target.style.backgroundColor = "rgba(255, 255,0 ,0.4)";
+                } else {
+                    // console.log("不允许。",);
+                    e.target.style.backgroundColor = "";
+                }
+            }
+        });
+        _new__content.addEventListener('dragenter', function (e) {
+            if (!window.root_attr["move"]) {
+                e.preventDefault();
+                return;
+            }
+            if (e.target.classList.contains('item-content')) {
+                e.preventDefault();
+            }
+        });
+        _new__content.addEventListener('dragleave', function (e) {
+            if (e.target.classList.contains('item-content')) {
+                e.preventDefault();
+                e.target.style.backgroundColor = "";
+            }
+        });
+        {
+            _new__action.insertAdjacentHTML('beforeend', `
+<button class="item-action-more" title="更多操作">
+    <i class="item-action-more-icon"></i>
+</button>
+`);
+            _new__action.querySelector('.item-action-more').addEventListener('click', function (e) {
+                // console.log(e.target);
+                if (e.target.tagName === 'A') { // 多余
+                    e.stopPropagation();
+                    e.preventDefault();
+                    e.target.parentNode.click();
+                    return;
+                }
+                // e.stopImmediatePropagation();
+                e.stopPropagation();
+                e.preventDefault();
+
+                item_menu.querySelector("#item-menu-action-zipping").style.display = window.root_attr.download_as_zip === true && window.root_attr.can_zip === true ? "" : "none";
+                item_menu.querySelector("#item-menu-action-download").style.display = "none";
+                item_menu.querySelector("#item-menu-action-rename").style.display = window.root_attr.rename ? "" : "none";
+                item_menu.querySelector("#item-menu-action-share").style.display = window.root_attr.share === true && window.root_attr.can_share === true ? "" : "none";
+                item_menu.querySelector("#item-menu-action-trash").style.display = window.root_attr.trash === true && window.root_attr.can_trash === true ? "" : "none";
+                item_menu.querySelector("#item-menu-action-delete").style.display = window.root_attr.delete === true ? "" : "none";
+                item_menu.currentTrItem = _new;
+                item_menu.style.display = 'block';
+
+                // item_menu.style.left = `${e.pageX}px`;
+                // item_menu.style.top = `${e.pageY}px`;
+                const menu = item_menu;
+                const menuWidth = menu.offsetWidth;
+                const menuHeight = menu.offsetHeight;
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                let x = e.clientX;
+                let y = e.clientY;
+                if (x + menuWidth > viewportWidth) {
+                    x = viewportWidth - menuWidth - 40;
+                }
+                if (y + menuHeight > viewportHeight) {
+                    y = viewportHeight - menuHeight;
+                }
+                menu.style.left = `${x + window.scrollX}px`;
+                menu.style.top = `${y + window.scrollY}px`;
+            });
+        }
+    } else if (isDrive(attr,)) {
+        let htmlTemplate = `
+<div class="item folder" draggable="false">
+    <a href="${url.toString()}" target="_self" onclick="event.preventDefault();" draggable="false">
+        <div class="item-content" draggable="true">
+            <i class="item-icon"></i>
+            <div class="item-info">
+                <div class="item-name"><span>${attr.name}</span></div>
+                <div class="item-meta">
+                </div>
+            </div>
+            <div class="item-action">
+            </div>
+        </div>
+    </a>
+</div>
+`;
+        container.insertAdjacentHTML('beforeend', htmlTemplate);
+        _new = container.querySelector('.item:last-child'); // div
+        _new__content = _new.querySelector('.item-content'); // div
+        if (root_attr.multiple_selection) {
+            _new__content.style.padding = "0px 14px 0px 6px";
+            _new__content.insertAdjacentHTML('afterbegin', HT_checkBox);
+            _new__content.querySelector('.custom-checkbox').addEventListener('click', (event) => {
+                if (document.getElementById("progress-bar").style.display !== "none") {
+                    return;
+                }
+                const ckb = document.getElementById(HT_checkBox_id)
+                ckb.checked = !ckb.checked
+                let r = getSelectedFile();
+                if (r.selectCount === 0) {
+                    wc1_ckb.checked = false
+                    wc1_ckb.indeterminate = false
+                } else if (r.selectCount > 0 && r.selectCount !== r.totalCount) {
+                    wc1_ckb.checked = false
+                    wc1_ckb.indeterminate = true
+                } else if (r.selectCount > 0 && r.selectCount === r.totalCount) {
+                    wc1_ckb.checked = true
+                    wc1_ckb.indeterminate = false
+                }
+                switchButtonGroup(r)
+            });
+        }
+        let _new__meta = _new__content.querySelector('.item-meta'); // div
+        let _new__action = _new__content.querySelector('.item-action'); // div
+        _new__content.addEventListener('click', function (e) {
+            if (e.target.classList.contains('item-content')) {
+                if (document.getElementById("progress-bar").style.display !== "none") {
+                    return;
+                }
+                window.location.href = _new__content.closest("a").href
+            }
+        });
+        _new__content.addEventListener('drop', function (e) {
+            if (!window.root_attr["move"]) {
+                e.preventDefault();
+                return;
+            }
+            if (e.target.classList.contains('item-content')) {
+                e.preventDefault();
+                e.target.style.backgroundColor = "";
+            }
+        });
+        _new__content.addEventListener('dragover', function (e) {
+            if (!window.root_attr["move"]) {
+                e.preventDefault();
+                return;
+            }
+            if (e.target.classList.contains('item-content')) {
+                e.target.style.backgroundColor = "";
+            }
+        });
+        _new__content.addEventListener('dragenter', function (e) {
+            if (!window.root_attr["move"]) {
+                e.preventDefault();
+                return;
+            }
+            if (e.target.classList.contains('item-content')) {
+                e.preventDefault();
+            }
+        });
+        _new__content.addEventListener('dragleave', function (e) {
+            if (e.target.classList.contains('item-content')) {
+                e.preventDefault();
+                e.target.style.backgroundColor = "";
+            }
+        });
+    }
+
+    if (isSymlink(attr)) {
+        _new.classList.add("symlink");
+    }
+    _new__content.item_attr = attr;
+    _new__content.parent_path = document.querySelector('.paths').querySelector('.path:last-child span');
+    if (!_new__content.parent_path) {
+        _new__content.parent_path = document.querySelector('#home-click');
+    }
+    _new__content.addEventListener('dragstart', function (e) {
+        // if (!window.root_attr["move"]) {
+        //     e.preventDefault();
+        //     e.stopPropagation();
+        //     return;
+        // }
+        if (e.target.classList.contains('item-content')) {
+            draggedElement = e;
+            // console.log("开始拖拽。", e.target, e.target.item_attr);
+            e.dataTransfer.setData("application/json", JSON.stringify(e.target.item_attr));
+            e.dataTransfer.effectAllowed = 'move';
+        }
+    });
+    _new__content.addEventListener('dragend', function (e) {
+        if (e.target.classList.contains('item-content')) {
+        }
+        draggedElement = null;
+    });
+    // console.log('initItem:', _new__content.item_attr, _new__content.parent_path.item_attr.name,);
+}
+
+function getCurrentFolderShareLink(attr,) {
+    if (window.root_attr.btn_goto_drive !== true) {
+        return `#`;
+    }
+    let id = attr.id === "root" ? window.root_attr.id : attr.id;
+    if (window.root_attr.type === Types.google_drive) {
+        return `https://drive.google.com/open?id=${id}`;
+    } else if (window.root_attr.type === Types.zoho_workdrive) {
+        return `https://workdrive.zohoexternal.com/folder/${id}`;
+    } else {
+        return `did://${id}`;
+    }
+}
+
+
+if (window.root_attr.btn_goto_drive !== true) {
+    document.querySelector('#open_drive').style.display = 'none';
+}
+if (window.root_attr.type === Types.google_drive) {
+    document.querySelector('#open_drive').setAttribute('title', "在Google网盘打开");
+} else if (window.root_attr.type === Types.zoho_workdrive) {
+    document.querySelector('#open_drive').setAttribute('title', "在Zoho网盘打开");
+} else {
+    document.querySelector('#open_drive').setAttribute('title', "");
+}
+
+function customEncode(str) {
+    // return encodeURI(str);
+    const specialChars = /[\/?#\[\]@!$&'()*+,;=%{}|\\^~\s`"<>：；！？（）]/g;
+    // const specialChars = /[\/?#\[\]@&=+%{}|\\^~\s`]/g;
+    return str.replace(specialChars, (match) => encodeURIComponent(match));
+}
+
+function chdir(e,) {
+    clearFileList();
+    showListMsg("")
+    let home_click = document.querySelector('#home-click'); // div
+    let path_spans = document.querySelectorAll('.path span'); // span
+    let spansArray = Array.from(path_spans);
+    spansArray.unshift(home_click);
+    let start_rm = false;
+    for (let i = 0; i < spansArray.length; i++) {
+        if (start_rm) {
+            spansArray.at(i).parentElement.parentElement.remove();
+        } else if (e !== null && spansArray[i] === e.target) {
+            start_rm = true;
+        }
+    }
+    path_spans = document.querySelectorAll('.path span'); // span
+    spansArray = Array.from(path_spans);
+    if (e !== null && e.target.classList.contains('item-content')) {
+        const _new_path = addPath(e.target.item_attr, spansArray.length === 0 ? home_click : spansArray.at(-1));
+        spansArray.push(_new_path);
+    }
+    if (e !== null && e.target.hasOwnProperty("item_attr")) {
+        document.querySelector('#open_drive').setAttribute("href", getCurrentFolderShareLink(e.target.item_attr));
+    }
+    let path = spansArray.map(element => encodeURIComponent(element.item_attr.name)).join("/");
+    if (path.length >= 1) {
+        path += "/";
+    }
+    const currentUrl = new URL(window.location.href);
+    currentUrl.pathname = "/" + path;
+    const newUrl = currentUrl.toString();
+    if (newUrl !== window.location.href.toString()) {
+        history.pushState(null, null, currentUrl.toString());
+    }
+
+    const _url = new URL(window.location.href.replace(/#$/, ""));
+
+    path = spansArray.map(element => customEncode(element.item_attr.name)).join("/");
+    if (path.length >= 1) {
+        path += "/";
+    }
+    currentUrl.pathname = "/";
+    currentUrl.search = "";
+    // console.log(currentUrl.toString(), path);
+    let qsmap = [];
+    for (const [key, value] of new URLSearchParams(_url.searchParams)) {
+        qsmap.push([key, value]);
+    }
+    let sqs = qsmap.map(q => `${customEncode(q[0])}=${customEncode(q[1])}`).join("&");
+    if (sqs.length >= 1) {
+        sqs = "?" + sqs;
+    }
+    document.getElementById('tip-current-url').textContent = currentUrl.toString() + path + sqs;
+
+    if (_url.searchParams.get('theme') === "dark") {
+        _url.searchParams.delete('theme');
+    } else {
+        _url.searchParams.set('theme', 'dark');
+    }
+    document.querySelector('#switch_theme').setAttribute("href", _url.toString());
+
+    toggleAnimation(true);
+    if (root_attr.first_layer_as_drive && e !== null && e.target === first_parent_path) {
+        fetchingStatusBar.displayInfo("正在获取网盘列表...");
+    } else {
+        fetchingStatusBar.displayInfo("正在获取文件列表...");
+    }
+    _chdir(e);
+}
+
+async function _chdir(e,) {
+    const baseUrl = new URL(window.location.href.replace(/#$/, ""));
+    // console.log('chdir:', e.target.item_attr.name, baseUrl);
+    try {
+        const response = await fetch(baseUrl.href, {
+            method: "POST", headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({action: "list",}),
+        });
+        console.log("chdir:response:", response);
+        if (!response.ok) {
+            if (response.status === 404) {
+                const p = getFullPath(e.target);
+                alert(`无效路径：${p.endsWith("/") ? p : p + "/"}`,);
+            }
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        let data = await response.json();
+        console.log("chdir:response:json", data);
+        if (e !== null) {
+            if (!e.target.hasOwnProperty("item_attr")) {
+                e.target.item_attr = {};
+            }
+            e.target.item_attr["id"] = data["parent"];
+        }
+        for (let i = 0; i < data["list"].length; i++) {
+            addFile(data["list"][i]);
+        }
+        if (root_attr.first_layer_as_drive && e !== null && e.target === first_parent_path) {
+            showListMsg(data["list"].length === 0 ? "没有网盘" : "")
+        } else {
+            showListMsg(data["list"].length === 0 ? "此文件夹为空" : "")
+        }
+        if (e !== null) {
+            document.querySelector('#open_drive').setAttribute("href", getCurrentFolderShareLink(e.target.item_attr));
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        showListMsg(`发生错误，请重试，${error}`, true)
+    }
+    toggleAnimation(false);
+    fetchingStatusBar.displayInfo();
+}
+
+function findFileItem(attr) {
+    let di = null;
+    document.querySelectorAll('.item-content').forEach((item) => {
+        if (item.item_attr.id.toString() === attr.id.toString()) {
+            di = item;
+        }
+    });
+    return di;
+}
+
+function getFullPath(element) {
+    let path = [];
+    while (true) {
+        if (element == null) {
+            break;
+        }
+        path.push(element.item_attr.name);
+        element = element.parent_path;
+    }
+    path.pop();
+    return "/" + path.map(name => encodeURIComponent(name)).reverse().join("/");
+}
+
+function getPathCount() {
+    return document.querySelectorAll('.path').length;
+}
+
+function getPathIndex(element) {
+    let pathIndex = -1;
+    let i = 0;
+    document.querySelectorAll('.path').forEach((item) => {
+        if (item === element) {
+            pathIndex = i;
+        }
+        i++;
+    });
+    return pathIndex;
+}
+
+function move(source, e, parsedObject) {
+    if (document.getElementById("progress-bar").style.display !== "none") {
+        return;
+    }
+    // console.log("收到拖放数据。", source, parsedObject,);
+    if (!source) {
+        return;
+    }
+    if (window.root_attr.upload && (isFolder(e.target.item_attr, false) || isDrive(e.target.item_attr))) {
+        if (confirm(`把文件${isFolder(source.item_attr, false) ? "夹" : ""}${isSymlink(source.item_attr,) ? "链接" : ""} “${source.item_attr.name}“ 移至 “${e.target.item_attr.name}” ？`)) {
+            toggleAnimation(true);
+            fetchingStatusBar.displayInfo("正在移动...");
+            _move(source, e.target);
+        }
+    }
+}
+
+async function _move(source, to,) {
+    const baseUrl = new URL(window.location.href.replace(/#$/, ""));
+    try {
+        const response = await fetch(baseUrl.href, {
+            method: "POST", headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({action: "move", source: getFullPath(source), to: getFullPath(to),}),
+        });
+        console.log("move:response:", response);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+    } catch (error) {
+        console.error("Error:", error);
+    }
+    chdir(null);
+}
+
+function rename(e,) {
+    if (document.getElementById("progress-bar").style.display !== "none") {
+        return;
+    }
+    let item = e.target.closest(".item-content");
+    let newName = prompt("重命名：", item.item_attr.name);
+    if (!newName) {
+        return;
+    }
+    newName = newName.replace(/[/\\:*?"<>\r\n\t\f]|^[\s]+|[\s]+$/g, '');
+    if (newName !== "" && newName !== item.item_attr.name) {
+        if (/^\.*$/.test(newName)) {
+            return;
+        }
+
+        if (root_attr.unique_name) {
+            for (let itemElement of getFileList()) {
+                if (newName === itemElement.querySelector(".item-name span").textContent) {
+                    alert(`名称重复 “${newName}” 。`);
+                    return;
+                }
+            }
+        }
+
+        toggleAnimation(true);
+        fetchingStatusBar.displayInfo("正在重命名...");
+        _rename(item, newName);
+    }
+}
+
+async function _rename(source, name,) {
+    const baseUrl = new URL(window.location.href.replace(/#$/, ""));
+    try {
+        const response = await fetch(baseUrl.href, {
+            method: "POST", headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({action: "rename", name: name, source: getFullPath(source),}),
+        });
+        console.log("rename:response:", response);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+    chdir(null);
+}
+
+function share(e,) {
+    if (document.getElementById("progress-bar").style.display !== "none") {
+        return;
+    }
+    let item = e.target.closest(".item-content");
+    let es = addDialog(`
+<div class="dl-share-column">
+<div class="dl-share-row">
+<label class="dialog-item-label">类型</label>
+<select id="dl-share-input-st1">
+    <option value="anyone" selected>共享给知道链接的任何人</option>
+    <option value="no">不公开</option>
+</select>
+</div>
+<div class="dl-share-row">
+<label class="dialog-item-label">权限</label>
+<select id="dl-share-input-st2">
+    <option value="reader" selected>检视者</option>
+    <option value="writer">编辑者</option>
+</select>
+</div>
+<div class="dl-share-buttongroup buttongroup">
+    <div class="dl-share-buttongroup-leftspace"></div>
+    <button id="dl-share-btn-yes">确定</button>
+    <button id="dl-share-btn-no">取消</button>
+</div>
+<div class="dl-share-bottom-textbox">
+    <a class="dl-share-bottom-a" href="#" target="_self" onclick="event.preventDefault();" draggable="false"><span class="dl-share-bottom-text"></span></a>
+</div>
+</div>
+<style>
+.dl-share-column{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.dl-share-row{
+    display: flex;
+    gap: 6px;
+}
+.dl-share-buttongroup{
+    display: flex;
+    gap: 10px;
+}
+.dl-share-buttongroup-leftspace{
+    display: inline-block;
+    flex:1;
+}
+</style>
+`);
+    es.dialog.style.minWidth = "280px";
+    es.dialog.style.maxWidth = "320px";
+    es.overlay.addEventListener("click", (event) => {
+        es.overlay.remove()
+    });
+    const btn_yes = es.content.querySelector("button#dl-share-btn-yes");
+    btn_yes.addEventListener("click", (event) => {
+        const st1 = es.content.querySelector("select#dl-share-input-st1");
+        const st2 = es.content.querySelector("select#dl-share-input-st2");
+        // console.log(st1, st1.options.selectedIndex)
+        toggleAnimation(true);
+        fetchingStatusBar.displayInfo("正在修改共享...");
+        _share(item, {
+            type: st1.querySelectorAll("option")[st1.options.selectedIndex].getAttribute("value"),
+            role: st2.querySelectorAll("option")[st2.options.selectedIndex].getAttribute("value"),
+        })
+        es.overlay.remove()
+    });
+    const btn_no = es.content.querySelector("button#dl-share-btn-no");
+    btn_no.addEventListener("click", (event) => {
+        es.overlay.remove()
+    });
+    const urlspan = es.content.querySelector("span.dl-share-bottom-text");
+    urlspan.textContent = getCurrentFolderShareLink(item.item_attr)
+    const urla = es.content.querySelector("a.dl-share-bottom-a");
+    urla.href = urlspan.textContent;
+    urla.style.textDecoration = "none";
+    // urla.style.pointerEvents = "none";
+
+}
+
+async function _share(source, data,) {
+    const baseUrl = new URL(window.location.href.replace(/#$/, ""));
+    try {
+        const response = await fetch(baseUrl.href, {
+            method: "POST", headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({action: "share", type: data.type, role: data.role, source: getFullPath(source),}),
+        });
+        console.log("share:response:", response);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+    chdir(null);
+}
+
+function trash(e,) {
+    if (document.getElementById("progress-bar").style.display !== "none") {
+        return;
+    }
+    let item = e.target.closest(".item-content");
+    if (confirm(`把文件${isFolder(item.item_attr, false) ? "夹" : ""}${isSymlink(item.item_attr,) ? "链接" : ""}移至垃圾桶：“${item.item_attr.name}”？`)) {
+        toggleAnimation(true);
+        fetchingStatusBar.displayInfo("正在移至垃圾桶...");
+        _trash(item,);
+    }
+}
+
+async function _trash(source,) {
+    const baseUrl = new URL(window.location.href.replace(/#$/, ""));
+    try {
+        const response = await fetch(baseUrl.href, {
+            method: "POST", headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({action: "trash", source: getFullPath(source),}),
+        });
+        console.log("trash:response:", response);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+    chdir(null);
+}
+
+async function _trashSelected(sources) {
+    const baseUrl = new URL(window.location.href.replace(/#$/, ""));
+    try {
+        const response = await fetch(baseUrl.href, {
+            method: "POST", headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                action: "trash_selected", ...resolveSelectedItems2kw(sources),
+            }),
+        });
+        console.log("trash_selected:response:", response);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+    chdir(null);
+}
+
+function _delete(e,) {
+    if (document.getElementById("progress-bar").style.display !== "none") {
+        return;
+    }
+    let item = e.target.closest(".item-content");
+    if (confirm(`永久删除文件${isFolder(item.item_attr, false) ? "夹" : ""}${isSymlink(item.item_attr,) ? "链接" : ""}：“${item.item_attr.name}”？`)) {
+        toggleAnimation(true);
+        fetchingStatusBar.displayInfo("正在永久删除...");
+        _delete2(item,);
+    }
+}
+
+async function _delete2(source,) {
+    const baseUrl = new URL(window.location.href.replace(/#$/, ""));
+    try {
+        const response = await fetch(baseUrl.href, {
+            method: "POST", headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({action: "delete", source: getFullPath(source),}),
+        });
+        console.log("delete:response:", response);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+    chdir(null);
+}
+
+async function _deleteSelected(sources) {
+    const baseUrl = new URL(window.location.href.replace(/#$/, ""));
+    try {
+        const response = await fetch(baseUrl.href, {
+            method: "POST", headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                action: "delete_selected", ...resolveSelectedItems2kw(sources),
+            }),
+        });
+        console.log("delete_selected:response:", response);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+    chdir(null);
+}
+
+async function _replySelected(sources) {
+    const baseUrl = new URL(window.location.href.replace(/#$/, ""));
+    try {
+        const response = await fetch(baseUrl.href, {
+            method: "POST", headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                action: "reply_selected", ...resolveSelectedItems2kw(sources),
+            }),
+        })
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`)
+        }
+    } catch (error) {
+        console.error("Error:", error)
+    }
+    chdir(null)
+}
+
+async function _newFolder(name,) {
+    const baseUrl = new URL(window.location.href.replace(/#$/, ""));
+    try {
+        const response = await fetch(baseUrl.href, {
+            method: "POST", headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({action: "new_folder", name: name,}),
+        });
+        console.log("new_folder:response:", response);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+    chdir(null);
+}
+
+async function zipping_request(e,) {
+    if (document.getElementById("progress-bar").style.display !== "none") {
+        return;
+    }
+    let item = e.target.closest(".item-content");
+    toggleAnimation(true);
+    fetchingStatusBar.displayInfo("正在打包文件夹...");
+    _zipping_request(e, item,);
+}
+
+async function _zipping_request(e, source,) {
+    let data;
+    const baseUrl = new URL(window.location.href.replace(/#$/, ""));
+    try {
+        const response = await fetch(baseUrl.href, {
+            method: "POST", headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({action: "zip", source: getFullPath(source),}),
+        });
+        console.log("zip:response:", response);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        data = await response.json();
+        console.log("zip:response:json", data);
+    } catch (error) {
+        console.error("Error:", error);
+    }
+    if (data && data.status === 0) {
+        const a = document.createElement('a');
+        let url = new URL(e.target.querySelector("a").href);
+        if (url.pathname.endsWith('/')) url.pathname = url.pathname.slice(0, -1);
+        url.searchParams.set('zip', data.id);
+        a.href = url.toString();
+        a.download = e.target.closest(".item-content").item_attr.name;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        fetchingStatusBar.displayInfo("已发起下载请求...", -1, 5000);
+    } else {
+        fetchingStatusBar.displayInfo("打包失败...", 0, 6000);
+    }
+    // chdir(null);
+    toggleAnimation(false);
+
+}
+
+async function _resolveTree(source, download_file = false) {
+    let data;
+    const baseUrl = new URL(window.location.href.replace(/#$/, ""));
+    try {
+        const response = await fetch(baseUrl.href, {
+            method: "POST", headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                action: "resolve_tree", source: source, local: download_file,
+            }),
+        });
+        console.log("resolve_tree:response:", response);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        data = await response.json();
+        console.log("resolve_tree:response:json", data);
+    } catch (error) {
+        console.error("Error:", error);
+    }
+    // chdir(null);
+    toggleAnimation(false);
+    fetchingStatusBar.displayInfo();
+    if (data.summary.fileCount > 0) {
+        if (download_file) {
+            if (confirm(`${data.summary.fileCount}个文件，总大小${formatBytes(parseInt(data.summary.totalSize, 10)).replace(/\s/, "")}，开始下载？`)) {
+                if (source.endsWith("/")) source = source.slice(0, -1);
+                let ps = source.split("/");
+                ps.pop();
+                source = ps.join("/") + "/";
+                const u = new URL(window.location.href)
+                u.pathname = source;
+                cbr.udt.addDownloadTaskByTree([data["tree"],], u.toString(), [])
+            }
+        } else {
+            if (confirm(`${data.summary.fileCount}个文件，${data.summary.folderCount > 0 ? `${data.summary.folderCount}个文件夹，` : ""}总大小${formatBytes(parseInt(data.summary.totalSize, 10)).replace(/\s/, "")}，开始转存？`)) {
+                // toggleAnimation(true);
+                openDialog();
+                copy_from(data);
+            }
+        }
+    }
+}
+
+async function _newShortcut(source) {
+    const baseUrl = new URL(window.location.href.replace(/#$/, ""));
+    try {
+        const response = await fetch(baseUrl.href, {
+            method: "POST", headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                action: "new_shortcut", source: source,
+            }),
+        });
+        console.log("new_shortcut:response:", response);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        let data = await response.json();
+        console.log("new_shortcut:response:json", data);
+    } catch (error) {
+        console.error("Error:", error);
+    }
+    chdir(null);
+}
+
+function addPath(attr, parent_path) {
+    if (typeof attr == "string") {
+        const name = attr.toString();
+        attr = {
+            name: name, type: ItemTypes.folder,
+        }
+        if (root_attr.first_layer_as_drive && parent_path === first_parent_path) {
+            attr.type = ItemTypes.drive
+        }
+    }
+    let container = document.querySelector('.paths')
+    const htmlTemplate = `
+<div class="path">
+    <a href="#" target="_self" onclick="event.preventDefault();" draggable="false">
+        <i class="path-icon"></i>
+        <span draggable="false">${attr.name}</span>
+    </a>
+</div>
+`;
+    container.insertAdjacentHTML('beforeend', htmlTemplate);
+    let _new = container.querySelector('.path:last-child span'); // span
+    _new.item_attr = attr;
+    _new.parent_path = parent_path;
+
+    let _new_a = container.querySelector('.path:last-child a'); // a
+    let _url = new URL(window.location.href.replace(/#$/, ""));
+    _url.pathname = getFullPath(_new) + "/";
+    _new_a.setAttribute("href", _url.toString());
+
+    // if (isDrive(_new.item_attr)) { // 不必
+    //     _new_a.removeAttribute("onclick")
+    // } else {
+    _new.addEventListener('click', function (event) {
+        if (event.target.tagName === 'SPAN') {
+            if (document.getElementById("progress-bar").style.display !== "none") {
+                return;
+            }
+            chdir(event);
+        }
+    });
+    // }
+    _new.addEventListener('drop', function (event) {
+        if (!window.root_attr["move"]) {
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+        }
+        if (event.target.tagName === 'SPAN') {
+            event.preventDefault();
+            event.target.style.backgroundColor = "";
+            const parsedObject = JSON.parse(event.dataTransfer.getData("application/json"));
+            if (window.root_attr.upload && getPathIndex(event.target.parentNode.parentNode) + 1 !== getPathCount()) {
+                let source = findFileItem(parsedObject);
+                move(source, event, parsedObject);
+            }
+        }
+    });
+    _new.addEventListener('dragover', function (event) {
+        if (!window.root_attr["move"]) {
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+        }
+        if (event.target.tagName === 'SPAN') {
+            const parsedObject = JSON.parse(event.dataTransfer.getData("application/json"));
+            if (window.root_attr.upload && getPathIndex(event.target.parentNode.parentNode) + 1 !== getPathCount()) {
+                event.preventDefault();
+                event.target.style.backgroundColor = "rgba(255, 255,0 ,0.4)";
+            } else {
+                event.target.style.backgroundColor = "";
+            }
+        }
+    });
+    _new.addEventListener('dragenter', function (event) {
+        if (!window.root_attr["move"]) {
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+        }
+        if (event.target.tagName === 'SPAN') {
+            event.preventDefault();
+        }
+    });
+    _new.addEventListener('dragleave', function (event) {
+        if (event.target.tagName === 'SPAN') {
+            event.preventDefault();
+            event.target.style.backgroundColor = "";
+        }
+    });
+
+    {
+        const path_container = document.querySelector('div.banner-left');
+        path_container.scrollLeft = path_container.scrollWidth;
+    }
+
+    return _new;
+}
+
+
+if (window.root_attr.upload === true) {
+    document.querySelector('#upload').addEventListener('click', function (e) {
+        if (document.getElementById("progress-bar").style.display !== "none") {
+            return;
+        }
+        openDialog();
+    });
+} else {
+}
+if (window.root_attr.new_folder === true) {
+    document.querySelector('#new_folder').addEventListener('click', function (e) {
+        if (document.getElementById("progress-bar").style.display !== "none") {
+            return;
+        }
+        let folderName = prompt("新建文件夹：");
+        if (!folderName) {
+            return;
+        }
+        folderName = folderName.replace(/[/\\:*?"<>\r\n\t\f]|^[\s]+|[\s]+$/g, '');
+        if (folderName !== "") {
+            if (/^\.*$/.test(folderName)) {
+                return;
+            }
+
+            if (root_attr.unique_name) {
+                for (let itemElement of getFileList()) {
+                    if (folderName === itemElement.querySelector(".item-name span").textContent) {
+                        alert(`名称重复 “${folderName}” 。`);
+                        return;
+                    }
+                }
+            }
+
+            toggleAnimation(true);
+            fetchingStatusBar.displayInfo("正在新建文件夹...");
+            _newFolder(folderName);
+        }
+    });
+} else {
+}
+if (window.root_attr.can_shortcut && window.root_attr.new_shortcut === true) {
+    document.querySelector('#new_shortcut').addEventListener('click', function (e) {
+        if (document.getElementById("progress-bar").style.display !== "none") {
+            return;
+        }
+        let url = prompt("为此链接创建捷径：");
+        if (!url) {
+            return;
+        }
+        let rr = url.match(/(?:id=|folders\/|file\/d\/)([a-zA-Z0-9_-]+)/)
+        if (!rr) rr = url.match(/^([a-zA-Z0-9_-]+)$/)
+        if (rr) {
+            toggleAnimation(true);
+            fetchingStatusBar.displayInfo("正在创建捷径...");
+            _newShortcut(rr[1]);
+        }
+    });
+} else {
+}
+if (window.root_attr.can_copy && window.root_attr.copy_from === true) {
+    document.querySelector('#copy_from').addEventListener('click', function (e) {
+        if (document.getElementById("progress-bar").style.display !== "none") {
+            return;
+        }
+        let url = prompt("转存此链接：");
+        if (!url) {
+            return;
+        }
+        let rr = url.match(/(?:id=|folders\/|file\/d\/)([a-zA-Z0-9_-]+)/)
+        if (!rr) rr = url.match(/^([a-zA-Z0-9_-]+)$/)
+        if (rr) {
+            toggleAnimation(true);
+            fetchingStatusBar.displayInfo("正在获取信息...");
+            _resolveTree(rr[1]);
+        }
+    });
+} else {
+}
+if (window.root_attr.multiple_selection) {
+    document.querySelector('#batch_copy_link').addEventListener('click', function (e) {
+        if (document.getElementById("progress-bar").style.display !== "none") {
+            return;
+        }
+        const tli = getSelectedFile().selected.map(element => {
+            return element.querySelector("a").href
+        })
+        navigator.clipboard.writeText(tli.join("\n")).then(() => {
+        }).catch(err => {
+            console.error('复制失败:', err);
+        });
+    });
+    if (window.root_attr.can_trash && window.root_attr.trash === true) {
+        document.querySelector('#batch_trash').addEventListener('click', function (e) {
+            if (document.getElementById("progress-bar").style.display !== "none") {
+                return;
+            }
+            let items = getSelectedFile().selected;
+            if (items.length === 0) return;
+            if (confirm(`把${items.length}个项目移至垃圾桶？`)) {
+                toggleAnimation(true);
+                fetchingStatusBar.displayInfo("正在移至垃圾桶...");
+                _trashSelected(items,);
+            }
+        });
+    }
+    if (window.root_attr.delete === true) {
+        document.querySelector('#batch_delete').addEventListener('click', function (e) {
+            if (document.getElementById("progress-bar").style.display !== "none") {
+                return;
+            }
+            let items = getSelectedFile().selected;
+            if (items.length === 0) return;
+            if (confirm(`永久删除${items.length}个项目？`)) {
+                toggleAnimation(true);
+                fetchingStatusBar.displayInfo("正在永久删除...");
+                _deleteSelected(items,);
+            }
+        });
+    }
+    if (window.root_attr.reply === true) {
+        document.querySelector('#batch_reply').addEventListener('click', function (e) {
+            if (document.getElementById("progress-bar").style.display !== "none") {
+                return;
+            }
+            let items = getSelectedFile().selected;
+            if (items.length === 0) return;
+            if (confirm(`是否为${items.length}个项目添加回复标记？`)) {
+                toggleAnimation(true);
+                fetchingStatusBar.displayInfo("正在添加回复标记...");
+                _replySelected(items,)
+            }
+        })
+    }
+} else {
+}
+switchButtonGroup()
+
+
+let parent_path = document.querySelector('#home-click'); // div
+let first_parent_path = parent_path;
+parent_path.item_attr = {name: parent_path.textContent, type: ItemTypes.folder,};
+parent_path.parent_path = null;
+if (root_attr.first_layer_as_drive) {
+    parent_path.closest("a").removeAttribute("onclick")
+} else {
+    parent_path.addEventListener('click', function (e) {
+        if (document.getElementById("progress-bar").style.display !== "none") {
+            return;
+        }
+        chdir(e);
+    });
+}
+
+parent_path.addEventListener('drop', function (event) {
+    if (!window.root_attr["move"]) {
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+    }
+    event.preventDefault();
+    event.target.style.backgroundColor = "";
+    const parsedObject = JSON.parse(event.dataTransfer.getData("application/json"));
+    if (window.root_attr.upload && getPathCount() > 0 && !root_attr.first_layer_as_drive) {
+        let source = findFileItem(parsedObject);
+        move(source, event, parsedObject);
+    }
+});
+parent_path.addEventListener('dragover', function (event) {
+    if (!window.root_attr["move"]) {
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+    }
+    const parsedObject = JSON.parse(event.dataTransfer.getData("application/json"));
+    if (window.root_attr.upload && getPathCount() > 0 && !root_attr.first_layer_as_drive) {
+        event.preventDefault();
+        event.target.style.backgroundColor = "rgba(255, 255,0 ,0.4)";
+    } else {
+        event.target.style.backgroundColor = "";
+    }
+});
+parent_path.addEventListener('dragenter', function (event) {
+    if (!window.root_attr["move"]) {
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+    }
+    event.preventDefault();
+});
+parent_path.addEventListener('dragleave', function (event) {
+    event.preventDefault();
+    event.target.style.backgroundColor = "";
+});
+const pathList = window.location.pathname.split('/').map(decodeURIComponent).filter(part => part !== '');
+// console.log('initPath:', parent_path.item_attr.name,);
+for (const i of pathList) {
+    parent_path = addPath(i, parent_path,);
+}
+if (root_attr.first_layer_as_drive) {
+    if (document.getElementById("progress-bar").style.display !== "none") {
+    } else {
+        chdir({
+            target: parent_path,
+        });
+    }
+} else {
+    parent_path.click();
+}
+
+
+window.addEventListener('popstate', function (event) {
+    location.reload();
+});
+
+
+function openDialog() {
+    if (!root_attr.upload) {
+        return;
+    }
+    document.getElementById('dialogOverlay').classList.remove('hidden');
+    document.getElementById('fileInput').value = '';
+    document.getElementById('input-upload-file-name').value = '';
+    toggleUploadButton();
+    toggleAnimation_upload(false);
+    document.getElementById("tip-uploading-file-name").textContent = '';
+    document.getElementById("upload2progress").style.display = 'none';
+    upload2progress.querySelector("#tipbox-uploading-bottomdiv").style.display = "flex";
+    upload2progress_retry.style.display = "none";
+    document.getElementById("upload2select").style.display = 'block';
+}
+
+function closeDialog(event) {
+    if (document.getElementById("upload2progress").style.display !== "none") {
+        return;
+    }
+    toggleAnimation_upload(false);
+    document.getElementById("tip-uploading-file-name").textContent = '';
+    document.getElementById("upload2select").style.display = 'block';
+
+    const overlay = document.getElementById('dialogOverlay');
+    document.getElementById('fileInput').value = '';
+    document.getElementById('input-upload-file-name').value = '';
+    if (event.target === overlay) {
+        overlay.classList.add('hidden');
+    }
+}
+
+function toggleUploadButton() {
+    const fileInput = document.getElementById('fileInput');
+    const uploadBtn = document.getElementById('uploadBtn');
+    // uploadBtn.disabled = fileInput.files.length <= 0;
+    uploadBtn.disabled = false;
+}
+
+function handleFileChange(event) {
+    const files = event.target.files;
+    toggleUploadButton();
+    let label_text = "";
+    for (let file of files) {
+        label_text += file.name + "\n";
+    }
+    document.getElementById('input-upload-file-name').value = label_text;
+}
+
+
+function upload(file, name,) {
+    toggleAnimation_upload(false);
+    document.getElementById("tip-uploading-file-name").textContent = name;
+    document.getElementById("upload2progress").style.display = 'flex';
+    document.getElementById("upload2select").style.display = 'none';
+
+    const progress_bar = document.getElementById("progress-bar-upload");
+    const progress = document.getElementById("progress-upload");
+    progress_bar.style.display = "block";
+    progress.style.width = "0%";
+
+    let url = new URL(window.location.href.replace(/#$/, ""));
+    if (!url.pathname.endsWith('/')) {
+        url.pathname += "/";
+    }
+    url.pathname = url.pathname + encodeURIComponent(name);
+    const xhr = new XMLHttpRequest();
+    xhr.open("PUT", url, true);
+    xhr.setRequestHeader("Content-Type", file.type);
+    xhr.upload.onprogress = function (event) {
+        if (event.lengthComputable) {
+            const percentComplete = Math.round((event.loaded / event.total) * 100);
+            if (percentComplete === 100) {
+                console.log(`上传进度: ${percentComplete}%`);
+                toggleAnimation_upload(true);
+            } else {
+                // console.log(`上传进度: ${percentComplete}%`);
+                progress.style.width = `${percentComplete}%`;
+            }
+        }
+    };
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log("文件上传成功");
+        } else {
+            console.error("文件上传失败", xhr.status, xhr.statusText);
+        }
+        document.getElementById("upload2progress").style.display = 'none';
+        closeDialog({target: document.getElementById('dialogOverlay')});
+        chdir(null);
+    };
+    xhr.onerror = function () {
+        console.error("请求错误");
+        document.getElementById("upload2progress").style.display = 'none';
+        closeDialog({target: document.getElementById('dialogOverlay')});
+        // chdir(null);
+        location.reload();
+    };
+    xhr.send(file);
+}
+
+function uploadFile() {
+    const fileInput = document.getElementById('fileInput');
+    const files = fileInput.files;
+    if (files.length === 0) {
+        toggleUploadButton();
+    } else {
+        let valid_files = [];
+        for (let i = 0; i < files.length; i++) {
+            let file = files[i];
+            let name = file.name;
+            name = name.replace(/[/\\:*?"<>\r\n\t\f]|^[\s]+|[\s]+$/g, '');
+            if (name.length === 0) {
+                continue;
+            }
+            if (/^\.*$/.test(name)) {
+                continue;
+            }
+            for (let disallowedUploadElement of window.root_attr.disallowed_upload) {
+                if (!disallowedUploadElement.startsWith('.')) {
+                    disallowedUploadElement = "." + disallowedUploadElement;
+                }
+                if (name.endsWith(disallowedUploadElement)) {
+                    // fileInput.value = '';
+                    // document.getElementById('input-upload-file-name').value = "";
+                    alert(document.getElementById('tip-disallowed-upload').textContent);
+                    return;
+                }
+            }
+            if (root_attr.max_upload_size > 0 && file.size >= root_attr.max_upload_size * 1024 * 1024) {
+                alert(`${name}上传失败, 单文件大小限制为${root_attr.max_upload_size}MB。`);
+                continue;
+            }
+
+            if (root_attr.unique_name) {
+                for (let itemElement of getFileList()) {
+                    if (name === itemElement.querySelector(".item-name span").textContent) {
+                        alert(`名称重复 “${name}” 。`);
+                        return;
+                    }
+                }
+            }
+            valid_files.push(file);
+        }
+        toggleAnimation_upload(false);
+        document.getElementById("tip-uploading-file-name").textContent = name;
+        document.getElementById("upload2progress").style.display = 'flex';
+        document.getElementById("upload2select").style.display = 'none';
+        document.getElementById("upload-queue-list").innerHTML = '';
+        upload_task_map.clear();
+
+        const progress_bar = document.getElementById("progress-bar-upload");
+        const progress = document.getElementById("progress-upload");
+        progress_bar.style.display = "block";
+        progress.style.width = "0%";
+
+        for (let file of valid_files) {
+            // upload(file, name);
+            let url = new URL(window.location.href.replace(/#$/, ""));
+            if (!url.pathname.endsWith('/')) url.pathname += "/";
+            url.pathname = url.pathname + encodeURIComponent(name);
+            current_upload_pturl = url;
+            cbr.udt.addUploadTask(url, file, name);
+        }
+    }
+    document.getElementById('fileInput').value = '';
+}
+
+async function copy_from({tree, summary}) {
+    toggleAnimation_upload(false);
+    document.getElementById("tip-uploading-file-name").textContent = "";
+    upload2progress.querySelector("#tipbox-uploading-bottomdiv").style.display = "none";
+    upload2progress_retry.style.display = "none";
+    document.getElementById("upload2progress").style.display = 'flex';
+    document.getElementById("upload2select").style.display = 'none';
+
+    const progress_bar = document.getElementById("progress-bar-upload");
+    const progress = document.getElementById("progress-upload");
+    progress_bar.style.display = "block";
+    progress.style.width = "0%";
+
+    const baseUrl = new URL(window.location.href.replace(/#$/, ""));
+    summary["finishedCount"] = 0
+    _copy_from_upprogress(summary, progress_bar, progress,);
+    _copy_from([tree,], summary, baseUrl, progress_bar, progress,);
+}
+
+async function _copy_from(trees, summary, url, progress_bar, progress,) {
+    let files = [], folders = [];
+    for (const tree of trees) {
+        if (isFolder(tree, false)) {
+            folders.push(tree)
+        } else if (isFile(tree, false)) {
+            files.push(tree)
+        }
+    }
+    if (files.length > 0) {
+        try {
+            const response = await fetch(url.href, {
+                method: "POST", headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    action: "copy_from", sources: files.map(e => {
+                        if (isSymlink(e,)) {
+                            return {id: e.symlink_target.id, name: e.name}
+                        } else {
+                            return {id: e.id, name: e.name}
+                        }
+                    }),
+                }),
+            });
+            console.log("copy_from-file:response:", response);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            let data = await response.json();
+            console.log("copy_from-file:response:json", data);
+        } catch (error) {
+            console.error("Error:", error);
+            document.getElementById("tip-uploading-file-name").textContent = `转存失败。`;
+            return -1;
+        }
+        summary["finishedCount"] += files.length;
+        _copy_from_upprogress(summary, progress_bar, progress,);
+    }
+    if (folders.length > 0) {
+        try {
+            const response = await fetch(url.href, {
+                method: "POST", headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({action: "new_folder", names: folders.map(e => e.name),}),
+            });
+            console.log("new_folder:response:", response);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            document.getElementById("tip-uploading-file-name").textContent = `转存失败。`;
+            return -1;
+        }
+        summary["finishedCount"] += folders.length;
+        _copy_from_upprogress(summary, progress_bar, progress,);
+    }
+    for (const folder of folders) {
+        const baseUrl = new URL(url.href.replace(/#$/, ""));
+        if (!baseUrl.pathname.endsWith('/')) baseUrl.pathname += "/";
+        baseUrl.pathname = baseUrl.pathname + encodeURIComponent(folder["name"]) + "/";
+        if (await _copy_from(folder["children"], summary, baseUrl, progress_bar, progress,) === -1) {
+            return -1;
+        }
+        _copy_from_upprogress(summary, progress_bar, progress,);
+    }
+    return 0;
+
+}
+
+function _copy_from_upprogress(summary, progress_bar, progress,) {
+    const percentComplete = Math.round((summary.finishedCount / (summary.fileCount + summary.folderCount)) * 100);
+    console.log(`转存进度: ${percentComplete}%`, summary.finishedCount, (summary.fileCount + summary.folderCount));
+    progress.style.width = `${percentComplete}%`;
+    document.getElementById("tip-uploading-file-name").textContent = `转存进度：${summary.finishedCount} / ${summary.fileCount + summary.folderCount}`;
+    if (!summary.end && summary.finishedCount === summary.fileCount + summary.folderCount) {
+        summary.end = true;
+        document.getElementById("upload2progress").style.display = 'none';
+        closeDialog({target: document.getElementById('dialogOverlay')});
+        chdir(null);
+    }
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+document.getElementById('dialogOverlay').addEventListener('dragenter', function (event) {
+    event.preventDefault();
+});
+document.getElementById('dialogOverlay').addEventListener('dragover', function (event) {
+    event.preventDefault();
+});
+document.getElementById('dialogOverlay').addEventListener('drop', function (event) {
+    event.preventDefault();
+});
+document.querySelector('body').addEventListener('dragenter', function (event) {
+    event.preventDefault();
+});
+document.querySelector('body').addEventListener('dragover', function (event) {
+    event.preventDefault();
+});
+document.querySelector('body').addEventListener('drop', function (event) {
+    event.preventDefault();
+});
+const list_box = document.querySelector('.list-box');
+list_box.addEventListener('dragenter', (event) => {
+    if (document.getElementById("progress-bar").style.display !== "none") {
+        return;
+    }
+    if (draggedElement) {
+        return;
+    }
+    event.preventDefault();
+    // list_box.style.border = "2px dashed #2088ee";
+    openDialog();
+});
+
+list_box.addEventListener('dragleave', () => {
+    // list_box.style.border = "none";
+});
+
+const dialog = document.querySelector('.dialog');
+dialog.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    if (document.getElementById("upload2progress").style.display !== "none") {
+        return;
+    }
+    dialog.style.border = "3px dashed #2088ee";
+});
+
+dialog.addEventListener('dragleave', () => {
+    dialog.style.border = "3px dashed #00000000";
+});
+
+dialog.addEventListener('drop', (event) => {
+    event.preventDefault();
+    dialog.style.border = "3px dashed #00000000";
+    if (document.getElementById("upload2progress").style.display !== "none") {
+        return;
+    }
+    const dataTransferItems = event.dataTransfer.items;
+    const validFiles = [];
+    for (let i = 0; i < dataTransferItems.length; i++) {
+        const item = dataTransferItems[i];
+        const entry = item.webkitGetAsEntry && item.webkitGetAsEntry();
+        // console.log(item, entry);
+        if (entry && entry.isDirectory) {
+            continue;
+        }
+        if (item.kind === 'file') {
+            const file = item.getAsFile();
+            // console.log(file,);
+            if (file) {
+                validFiles.push(file);
+            }
+        }
+    }
+    const fileInput = document.getElementById('fileInput');
+    if (validFiles.length > 0) {
+        const dataTransfer = new DataTransfer();
+        // validFiles.forEach(file => dataTransfer.items.add(file));
+        dataTransfer.items.add(validFiles[0]);
+        fileInput.files = dataTransfer.files;
+        handleFileChange({target: fileInput});
+
+        if (root_attr.auto_upload_after_drop) {
+            document.getElementById('uploadBtn').click();
+        }
+
+    } else {
+        fileInput.value = '';
+        document.getElementById('input-upload-file-name').value = "";
+    }
+});
+
+
+let data = [
+    {"id": "FUjoqK6omL34rC", "type": "folder", "name": "111", "size": 0, "shared": false, modified_time: null,},
+    {"id": "8xPd24yJ0Ek9yn", "type": "folder", "name": "222", "size": 0, "shared": false, modified_time: null,},
+    {"id": "445kFrYDgHWKQV", "type": "folder", "name": "333", "size": 0, "shared": false, modified_time: null,},
+    {"id": "UBk9grPZPU6Dcf", "type": "file", "name": "444", "size": 0, "shared": false, modified_time: null,}
+]
+for (let i = 0; i < data.length; i++) {
+    // addFile(data[i]);
+}
+
+
+</script>
+</body>
+</html>
