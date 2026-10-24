@@ -1,0 +1,118 @@
+[setup]
+  [setup.backends]
+    [setup.backends.rawgithubusercontentcom]
+      address = "raw.githubusercontent.com"
+      port = 443
+
+    # google_drive
+    [setup.backends.scriptgooglecom]
+      address = "script.google.com"
+      port = 443
+    [setup.backends.wwwgoogleapiscom]
+      address = "www.googleapis.com"
+      port = 443
+
+    # zoho_workdrive
+    [setup.backends.accountszohocom]
+      address = "accounts.zoho.com"
+      port = 443
+    [setup.backends.wwwzohoapiscom]
+      address = "www.zohoapis.com"
+      port = 443
+    [setup.backends.downloadzohocom]
+      address = "download.zoho.com"
+      port = 443
+    [setup.backends.uploadzohocom]
+      address = "upload.zoho.com"
+      port = 443
+    [setup.backends.api-consolezohocom]
+      address = "api-console.zoho.com"
+      port = 443
+
+    [setup.backends.accountszohoeu]
+      address = "accounts.zoho.eu"
+      port = 443
+    [setup.backends.wwwzohoapiseu]
+      address = "www.zohoapis.eu"
+      port = 443
+    [setup.backends.downloadzohoeu]
+      address = "download.zoho.eu"
+      port = 443
+    [setup.backends.uploadzohoeu]
+      address = "upload.zoho.eu"
+      port = 443
+    [setup.backends.api-consolezohoeu]
+      address = "api-console.zoho.eu"
+      port = 443
+
+    [setup.backends.accountszohocomau]
+      address = "accounts.zoho.com.au"
+      port = 443
+    [setup.backends.wwwzohoapiscomau]
+      address = "www.zohoapis.com.au"
+      port = 443
+    [setup.backends.downloadzohocomau]
+      address = "download.zoho.com.au"
+      port = 443
+    [setup.backends.uploadzohocomau]
+      address = "upload.zoho.com.au"
+      port = 443
+    [setup.backends.api-consolezohocomau]
+      address = "api-console.zoho.com.au"
+      port = 443
+
+    [setup.backends.accountszohoin]
+      address = "accounts.zoho.in"
+      port = 443
+    [setup.backends.wwwzohoapisin]
+      address = "www.zohoapis.in"
+      port = 443
+    [setup.backends.downloadzohoin]
+      address = "download.zoho.in"
+      port = 443
+    [setup.backends.uploadzohoin]
+      address = "upload.zoho.in"
+      port = 443
+    [setup.backends.api-consolezohoin]
+      address = "api-console.zoho.in"
+      port = 443
+
+    [setup.backends.accountszohojp]
+      address = "accounts.zoho.jp"
+      port = 443
+    [setup.backends.wwwzohoapisjp]
+      address = "www.zohoapis.jp"
+      port = 443
+    [setup.backends.downloadzohojp]
+      address = "download.zoho.jp"
+      port = 443
+    [setup.backends.uploadzohojp]
+      address = "upload.zoho.jp"
+      port = 443
+    [setup.backends.api-consolezohojp]
+      address = "api-console.zoho.jp"
+      port = 443
+
+    [setup.backends.accountszohocomcn]
+      address = "accounts.zoho.com.cn"
+      port = 443
+    [setup.backends.wwwzohoapiscomcn]
+      address = "www.zohoapis.com.cn"
+      port = 443
+    [setup.backends.downloadzohocomcn]
+      address = "download.zoho.com.cn"
+      port = 443
+    [setup.backends.uploadzohocomcn]
+      address = "upload.zoho.com.cn"
+      port = 443
+    [setup.backends.api-consolezohocomcn]
+      address = "api-console.zoho.com.cn"
+      port = 443
+
+    # pcloud
+    [setup.backends.apipcloudcom]
+      address = "api.pcloud.com"
+      port = 443
+    [setup.backends.eapipcloudcom]
+      address = "eapi.pcloud.com"
+      port = 443
